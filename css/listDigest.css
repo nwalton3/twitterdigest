@@ -1,0 +1,26 @@
+/* listDigest.css */
+body {
+  margin: 2em 5%; }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.tweets {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 60em; }
+
+.tweet {
+  padding: 1em; }
+  .tweet .body {
+    font-size: 1.75em; }
+  .tweet .tweet_info {
+    padding: 0.25em 1em;
+    background-color: #eeeeee;
+    margin-top: 0.5em; }
+  .tweet .info {
+    display: inline-block;
+    padding: 0.1em 0.25em; }
