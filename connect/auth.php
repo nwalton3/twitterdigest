@@ -18,37 +18,44 @@ define( API_URL, API_BASE . '1.1/' );
 // Make sure there's a session going
 session_start();
 
+//print '{ "key": "' . get_api_access_token() . '"}';
+$path = isset( $_GET['path'] ) ? $_GET['path'] : false;
+$q = isset( $_GET['q'] ) ? $_GET['q'] : false;
 
-print '{ "key": "' . get_api_access_token() . '"}';
-
+if ( $path !== false && $q !== false )
+{
+	$params = urldecode( $q );
+	$result = request( $path, $params );
+	print $result;
+}
+else 
+{
+	print "error";
+	return;
+}
 
 
 
 /* Func: Request
  * Desc: Submit a request to the twitter API. Returns results of API query in JSON format.
  * Args: @path - String - The path within the twitter API (ex: 'lists/list.json')
- *		 @params - Named Array - Key/value pairs of GET parameters to pass to the API
- *					(ex: array('id' => '555555555') )
+ *		 @params - String - The query string to send (ex: 'screen_name=natewalton')
  */
 function request( $path, $params ) {
 
-	$token = $_SESSION['access_token'];
-	$data = http_build_query( $params );
-	 
 	//Try a twitter API request now.
 	$options = array(
 		'http' => array(
 			'method' => 'GET',
-			'header' => 'Authorization: Bearer ' . $token,
+			'header' => 'Authorization: Bearer ' . get_api_access_token(),
 			'user_agent' => 'Twitter List Digest v0.1'
 		)
 	);
 	 
 	$context = stream_context_create( $options );
-	$json = file_get_contents( API_URL . $path . '?' . $data, false, $context );
-	$result = json_decode( $json, true );
+	$json = file_get_contents( API_URL . $path . '?' . $params, false, $context );
 	 
-	return $result;
+	return $json;
 }
 
 

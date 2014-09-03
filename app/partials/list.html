@@ -1,0 +1,25 @@
+<p class="backButton"><a href="/">Back</a></p>
+
+<section class="list">
+
+	<h1 ng-show="isList">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from @{{user.screen_name}}'s {{list.name}} list</h1>
+	<h1 ng-show="isUser">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from @{{user.screen_name}}</h1>
+
+	<ul class="tweets" ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: 20" ng-show="tweets">
+		<li class="tweet">
+			<div class="body">
+				<a class="screen_name" data-followers="{{tweet.user.followers_count | number}}" ng-href="/#/user/{{tweet.user.id}}" ng-show="isList">@{{tweet.user.screen_name}}</a>
+				<span class="tweet_text" ng-bind-html="tweet | parseTweet"></span>
+			</div>
+			<aside class="tweet_info">
+				<div class="info time">
+					<span class="day">{{tweet.created_at | parseDay}}</span>
+					<span class="date">{{tweet.created_at | parseDate | date:"h:mm a"}}</span>
+				</div>
+				<div class="info favorites">{{tweet.favorite_count}}</div>
+				<div class="info retweets">{{tweet.retweet_count}}</div>
+				<div class="info link"><a target="_blank" ng-href="https://twitter.com/{{tweet.user.screen_name}}/status/{{tweet.id_str}}">Direct link</a></div>
+			</aside>
+		</li>
+	</ul>
+</section>

@@ -14,24 +14,16 @@
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 
-	<body ng-controller="ListDigestCtrl as listDigest">
+	<body>
+		<div class="view-container">
+			<div ng-view class="view-frame"></div>
+		</div>
 
-		<form role="form" class="form-inline" ng-submit="findLists()">
-			<div class="form-group form-group-lg">
-				<span class="help-block">Enter a twitter handle to retrieve all of that user's lists</span>
-				<label for="twitterHandle">Twitter Handle: @</label>
-				<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" required />
-				<input id="findLists" type="submit" value="Find lists" class="btn btn-primary" />
-			</div>
-		</form>
-
-		<ul ng-repeat="list in lists" ng-show="lists">
-			<li ng-bind="list.title"></li>
-		</ul>
-
+		<script src="bower_components/underscore/underscore-min.js"></script>
 		<script src="bower_components/angular/angular.min.js"></script>
-		<script src="bower_components/angular-route/angular-route.js"></script>
-		<script src="bower_components/angular-resource/angular-resource.js"></script>
+		<script src="bower_components/angular-route/angular-route.min.js"></script>
+		<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+		<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 		<script src="app/js/app.js"></script>
 		<script src="app/js/directives.js"></script>
 		<script src="app/js/filters.js"></script>
