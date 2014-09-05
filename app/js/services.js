@@ -24,4 +24,10 @@
 		}
 	]);
 
+	ldServices.factory('typogr', [
+		function typogrifyFactory() {
+			return window.typogr;
+		}
+	]);
+
 })();

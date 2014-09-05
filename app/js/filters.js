@@ -36,8 +36,14 @@
 		}
 	]);
 
-	ldFilters.filter('parseTweet', ['$filter',
-		function() {
+	ldFilters.filter('typogr', ['typogr',
+		function( typogr ) {
+			return typogr.typogrify( text );
+		}
+	]);
+
+	ldFilters.filter('parseTweet', ['$filter', 'typogr',
+		function( $filter, typogr ) {
 			return function(tweet) {
 				var e = tweet.entities;
 				var urls = e.urls;
@@ -47,7 +53,11 @@
 				var t = tweet.text;
 				var newt = t;
 				
-				var replaceStrings = function( items ) {
+				var replaceString = function(string, repl) {
+					newt = newt.replace(string, repl);
+				};
+
+				var replaceEntities = function( items ) {
 					if ( items ) 
 					{
 						var l = items.length;
@@ -62,21 +72,26 @@
 							} else if ( items == users ) {
 								repl = '<a class="user" href="/#/user/' + item.id + '">@' + item.screen_name + "</a>";
 							} else if ( items == hashtags ) {
-								repl = '<span class="hashtag">#' + item.text + '</span>';
-							} else if ( items == media ) {
-								return;
+								repl = '<a class="hashtag" target="_blank" href="https://twitter.com/hashtag/' + item.text + '?src=hash">#' + item.text + '</a>';
+							} else if ( items == media && item.type == 'photo' ) {
+								repl = '';
 							}
 
-							newt = newt.replace(string, repl);
+							replaceString( string, repl );
 						}
 					}
 				};
 
-				replaceStrings( urls );
-				replaceStrings( users );
-				replaceStrings( hashtags );
 
-				return newt;
+				replaceEntities( urls );
+				replaceEntities( users );
+				replaceEntities( hashtags );
+				replaceEntities( media );
+				replaceString('RT ', '<span class="rt">RT</span> ');
+				replaceString(/^“/, '<span class="openingquote">“</span>');
+
+
+				return typogr.typogrify(newt);
 			}
 		}
 	]);

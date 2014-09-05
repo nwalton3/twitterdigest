@@ -12,6 +12,15 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
   <link rel="stylesheet" href="css/listDigest.css"/>
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+  <script type="text/javascript">
+	  (function(d) {
+	    var config = {
+	      kitId: 'rwj8ofy',
+	      scriptTimeout: 3000
+	    },
+	    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+	  })(document);
+	</script>
 </head>
 
 	<body>
@@ -24,6 +33,7 @@
 		<script src="bower_components/angular-route/angular-route.min.js"></script>
 		<script src="bower_components/angular-resource/angular-resource.min.js"></script>
 		<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+		<script src="node_modules/typogr/typogr.min.js"></script>
 		<script src="app/js/app.js"></script>
 		<script src="app/js/directives.js"></script>
 		<script src="app/js/filters.js"></script>

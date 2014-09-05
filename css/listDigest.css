@@ -1,26 +1,122 @@
+/* listDigest.sass 
+ */
+/* Fontawesome */
+/* FONT PATH
+ * -------------------------- */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0");
+  src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0") format("embedded-opentype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0") format("woff"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0") format("truetype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+/* Variables */
 /* listDigest.css */
 body {
-  margin: 2em 5%; }
+  margin: 2em 5% 10em;
+  background-color: #2a2a2a;
+  font-family: "fira-sans", sans-serif;
+  font-weight: 100; }
 
 * {
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
+
+h1 {
+  margin: 0 0 1em;
+  text-align: center;
+  color: #ee4444;
+  font-size: 2.5em;
+  font-family: "fira-sans", sans-serif;
+  font-weight: 300;
+  font-style: italic; }
+  h1 .source {
+    color: #eebb33; }
 
 .tweets {
   list-style: none;
   margin: 0 auto;
   padding: 0;
-  max-width: 60em; }
+  max-width: 50em; }
 
 .tweet {
-  padding: 1em; }
-  .tweet .body {
-    font-size: 1.75em; }
+  color: #dddddd;
+  margin: 0.5em 0;
+  border-radius: 0.75em;
+  background-color: #333333;
+  box-shadow: inset 0 -1px 0.5em -1px black;
+  border-bottom: 1px solid #333333;
+  overflow: hidden;
+  padding-bottom: 2em;
+  -webkit-transition: padding 200ms ease;
+  -o-transition: padding 200ms ease;
+  transition: padding 200ms ease; }
+  .tweet a, .tweet a:link, .tweet a:visited {
+    color: #44bbee; }
+    .tweet a.user, .tweet a:link.user, .tweet a:visited.user {
+      color: #00bbbb; }
+  .tweet a:hover, .tweet a:active {
+    color: #99ddff;
+    text-decoration: none; }
+  .tweet .tweet_body {
+    background-color: #333333;
+    font-size: 1.75em;
+    padding: 1em 0.75em 0.8em 1.35em;
+    border-radius: 0.5em 0.5em 0.25em 0.25em;
+    box-shadow: 0 0 2em #191919, inset 0 2px 0.65em -1px black;
+    border-bottom: 1px solid #333333; }
+    .tweet .tweet_body .rt {
+      color: #00bbbb; }
+    .tweet .tweet_body .hashtag {
+      color: #00bbbb; }
+    .tweet .tweet_body .openingquote {
+      margin-left: -0.35em; }
+  .tweet .tweet_photo {
+    margin-top: 1em;
+    margin-right: 0.5em; }
+    .tweet .tweet_photo img {
+      max-width: 100%;
+      margin: 0 auto;
+      display: block; }
   .tweet .tweet_info {
-    padding: 0.25em 1em;
-    background-color: #eeeeee;
-    margin-top: 0.5em; }
+    padding: 0 1em 0.4em 1.5em;
+    color: #777777;
+    border-radius: 0 0 0.5em 0.5em;
+    text-transform: lowercase;
+    font-family: "ff-basic-gothic-sc-web-pro", sans-serif;
+    font-weight: 300;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2em;
+    -webkit-transition: bottom 200ms ease;
+    -o-transition: bottom 200ms ease;
+    transition: bottom 200ms ease; }
+    .tweet .tweet_info a, .tweet .tweet_info a:link, .tweet .tweet_info a:visited {
+      color: #777777; }
+    .tweet .tweet_info a:hover, .tweet .tweet_info a:active {
+      color: #999999; }
+    .tweet .tweet_info .favorites:before, .tweet .tweet_info .retweets:before, .tweet .tweet_info .link:before {
+      font-family: "Fontawesome";
+      margin-right: 0.35em;
+      color: #555555; }
+    .tweet .tweet_info .favorites:before {
+      content: "\f004";
+      font-size: 0.7em; }
+    .tweet .tweet_info .retweets:before {
+      content: "\f079";
+      font-size: 0.85em; }
+    .tweet .tweet_info .link {
+      display: block;
+      position: absolute;
+      right: 1.5em;
+      top: 0;
+      padding: 0; }
+      .tweet .tweet_info .link:before {
+        content: "\f105";
+        font-size: 0.75em; }
   .tweet .info {
     display: inline-block;
-    padding: 0.1em 0.25em; }
+    padding: 0.1em 0.5em; }

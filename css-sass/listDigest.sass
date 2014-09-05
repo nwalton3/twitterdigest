@@ -1,32 +1,156 @@
+/* 
+ * listDigest.sass 
+ */
+
+@import "bootstrap/mixins/vendor-prefixes"
+
+
+/* Fontawesome */
+
+$fa-path: "../bower_components/font-awesome/"
+
+@import "../bower_components/font-awesome/scss/mixins"
+@import "../bower_components/font-awesome/scss/variables"
+
+$fa-font-path: "../bower_components/font-awesome/fonts"
+@import "../bower_components/font-awesome/scss/path"
+
+
+
+
+/* Variables */
+
+$blue1:  #4be
+$blue2:  #9df
+$green:  #0bb
+$yellow: #eb3
+$red:    #e44
+
+$info-height: 2em
+$info-top: 0
+$transition-speed: 200ms
+
+
 /* listDigest.css */
 
 body
-	margin: 2em 5%
+	margin: 2em 5% 10em
+	background-color: mix(#222, #333)
+	font-family: "fira-sans", sans-serif
+	font-weight: 100
 
 *
-	-webkit-box-sizing: border-box
-	-moz-box-sizing: border-box
-	box-sizing: border-box
+	position: relative
+	+box-sizing(border-box)
 
+
+h1
+	margin: 0 0 1em
+	text-align: center
+	color: $red
+	font-size: 2.5em
+	font-family: "fira-sans", sans-serif
+	font-weight: 300
+	font-style: italic
+	.source
+		color: $yellow
 
 .tweets
 	list-style: none
 	margin: 0 auto
 	padding: 0
-	max-width: 60em
+	max-width: 50em
 
 .tweet
-	padding: 1em
+	color: #ddd
+	margin: 0.5em 0
+	border-radius: 0.75em
+	background-color: #333
+	box-shadow: inset 0 -1px 0.5em -1px #000
+	border-bottom: 1px solid #333
+	overflow: hidden
+	padding-bottom: $info-height
+	+transition(padding $transition-speed ease)
 
-	.body
+	// &:hover, &.active
+	// 	padding-bottom: $info-height
+	// 	.tweet_info
+	// 		bottom: 0
+
+	a, a:link, a:visited
+		color: $blue1
+		&.user
+			color: $green
+	a:hover, a:active
+		color: $blue2
+		text-decoration: none
+
+	.tweet_body
+		background-color: #333
 		font-size: 1.75em
+		padding: 1em 0.75em 0.8em 1.35em
+		border-radius: 0.5em 0.5em 0.25em 0.25em
+		box-shadow: 0 0 2em mix(#222, #111), inset 0 2px 0.65em -1px #000
+		border-bottom: 1px solid #333
+		.rt
+			color: $green
+		.hashtag
+			color: $green
+		.openingquote
+			margin-left: -0.35em
+
+	.tweet_photo
+		margin-top: 1em
+		margin-right: 0.5em
+		img
+			max-width: 100%
+			margin: 0 auto
+			display: block
 
 	.tweet_info
-		padding: 0.25em 1em
-		background-color: #eee
-		margin-top: 0.5em
+		padding: $info-top 1em 0.4em 1.5em
+		color: #777
+		border-radius: 0 0 0.5em 0.5em
+		text-transform: lowercase
+		font-family: "ff-basic-gothic-sc-web-pro", sans-serif
+		font-weight: 300
+		position: absolute
+		left: 0
+		// bottom: -$info-height
+		bottom: 0
+		width: 100%
+		height: $info-height
+		+transition(bottom $transition-speed ease)
+
+		a, a:link, a:visited
+			color: #777
+		a:hover, a:active
+			color: #999
+
+		.favorites, .retweets, .link
+			&:before
+				font-family: "Fontawesome"
+				margin-right: 0.35em
+				color: #555
+		.favorites
+			&:before
+				content: $fa-var-heart
+				font-size: 0.7em
+		.retweets
+			&:before
+				content: $fa-var-retweet
+				font-size: 0.85em
+		.link
+			display: block 
+			position: absolute
+			right: 1.5em
+			top: $info-top
+			padding: 0
+			&:before
+				content: $fa-var-angle-right
+				font-size: 0.75em
 
 	.info
 		display: inline-block
-		padding: 0.1em 0.25em
+		padding: 0.1em 0.5em
 

@@ -2,14 +2,18 @@
 
 <section class="list">
 
-	<h1 ng-show="isList">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from @{{user.screen_name}}'s {{list.name}} list</h1>
-	<h1 ng-show="isUser">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from @{{user.screen_name}}</h1>
+	<h1 ng-show="isList">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from <span class="source">@{{user.screen_name}}'s {{list.name}} list</span></h1>
+	<h1 ng-show="isUser">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from <span class="source">@{{user.screen_name}}</span></h1>
 
 	<ul class="tweets" ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: 20" ng-show="tweets">
 		<li class="tweet">
-			<div class="body">
-				<a class="screen_name" data-followers="{{tweet.user.followers_count | number}}" ng-href="/#/user/{{tweet.user.id}}" ng-show="isList">@{{tweet.user.screen_name}}</a>
+			<div class="tweet_body">
+				<a class="screen_name" data-followers="{{tweet.user.followers_count | number}}" ng-href="/#/{{tweet.user.screen_name}}" ng-show="isList">@{{tweet.user.screen_name}}</a>
 				<span class="tweet_text" ng-bind-html="tweet | parseTweet"></span>
+				<a href="" class="" ng-show="tweet.entities.media">Show media</a>
+				<div class="tweet_photo" ng-show="tweet.entities.media" ng-repeat="media in tweet.entities.media">
+					<img ng-src="{{media.media_url_https}}" />
+				</div>
 			</div>
 			<aside class="tweet_info">
 				<div class="info time">

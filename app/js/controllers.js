@@ -37,11 +37,11 @@
 
 
 			// This is a list
-			if ( $scope.params.listid ) {
+			if ( $scope.params.listname ) {
 				$scope.path = 'lists/statuses.json';
-				$scope.query = 'count=' + $scope.numTweets + '&list_id=' + $scope.params.listid;
+				$scope.query = 'count=' + $scope.numTweets + '&slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username;
 
-				$scope.list = Lists.get( { path: 'lists/show.json', q: 'list_id=' + $scope.params.listid }, 
+				$scope.list = Lists.get( { path: 'lists/show.json', q: 'slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username }, 
 					function(){ // success
 						$scope.user = $scope.list.user;
 						$scope.isList = true;
@@ -49,11 +49,11 @@
 				);
 			} 
 			// This is a user
-			else if ( $scope.params.userid ) {
+			else if ( $scope.params.username ) {
 				$scope.path = 'statuses/user_timeline.json';
-				$scope.query = 'count=' + $scope.numTweets + '&user_id=' + $scope.params.userid;
+				$scope.query = 'count=' + $scope.numTweets + '&screen_name=' + $scope.params.username;
 
-				$scope.user = Lists.get( { path: 'users/show.json', q: 'user_id=' + $scope.params.userid }, 
+				$scope.user = Lists.get( { path: 'users/show.json', q: 'screen_name=' + $scope.params.username }, 
 					function() { // success
 						$scope.isUser = true;
 					}
