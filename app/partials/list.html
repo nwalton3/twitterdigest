@@ -1,18 +1,53 @@
-<p class="backButton"><a href="/">Back</a></p>
+<header>
 
-<section class="list">
+	<form role="form" class="form-inline" ng-submit="findUser()" method="GET">
+		<div class="form-group form-group-lg">
+			<label for="twitterHandle">@</label>
+			<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
+			<input id="findUser" type="submit" value="Search" class="btn btn-primary" />
+		</div>
+	</form>
 
-	<h1 ng-show="isList">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from <span class="source">@{{user.screen_name}}'s {{list.name}} list</span></h1>
-	<h1 ng-show="isUser">The top {{tweetsToShow}} of the {{numTweets}} latest tweets from <span class="source">@{{user.screen_name}}</span></h1>
+</header>
 
-	<ul class="tweets" ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: 20" ng-show="tweets">
-		<li class="tweet">
+
+
+<section class="digest">
+
+	<h1 data-ng-show="isList"><a data-ng-href="/#/{{user.screen_name}}">@{{user.screen_name}}'s</a> <span class="source">{{list.name}}</span> list</h1>
+
+	<h1 data-ng-show="isUser">
+		<span class="avatar">
+			<a data-ng-href="https://twitter.com/{{user.screen_name}}"><img data-ng-src="{{user.profile_image_url_https}}" /></a>
+		</span>
+		<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
+		<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
+	</h1>
+
+	<h2 ng-show="lists.length">Lists</h2>
+	<ul class="lists" ng-show="lists.length">
+		<li class="list" data-ng-repeat="list in lists" >
+			<a data-ng-href="/#/{{list.user.screen_name}}/{{list.slug}}">
+				<span class="screenName">@{{list.user.screen_name}}</span>
+				<span class="slash">/</span>
+				<span class="listName">{{list.name}}</span>
+			</a>
+		</li>
+	</ul>
+
+	<h2 ng-show="tweets.length">
+		Top <span data-ng-model="tweetsToShow" contenteditable>10</span> of 200 latest tweets
+	</h2>
+	<ul class="tweets" ng-show="tweets.length">
+		<li class="tweet" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
 			<div class="tweet_body">
-				<a class="screen_name" data-followers="{{tweet.user.followers_count | number}}" ng-href="/#/{{tweet.user.screen_name}}" ng-show="isList">@{{tweet.user.screen_name}}</a>
-				<span class="tweet_text" ng-bind-html="tweet | parseTweet"></span>
-				<a href="" class="" ng-show="tweet.entities.media">Show media</a>
-				<div class="tweet_photo" ng-show="tweet.entities.media" ng-repeat="media in tweet.entities.media">
-					<img ng-src="{{media.media_url_https}}" />
+				<a class="user screen_name" data-followers="{{tweet.user.followers_count | number}}" data-ng-href="/#/{{tweet.user.screen_name}}" data-ng-show="isList">@{{tweet.user.screen_name}}</a>
+				<span class="tweet_text" data-ng-bind-html="tweet | parseTweet"></span>
+				<div class="tweet_media collapsed" data-ng-show="tweet.entities.media" data-ng-repeat="media in tweet.entities.media">
+					<a href="" class="show_media" data-ng-click="showMedia($event)">Show {{media.type}}</a>
+					<div class="imgWrapper" data-ng-attr-style="max-width:{{media.sizes.medium.w}}px; padding-bottom:{{ (media.sizes.medium.h / media.sizes.medium.w) * 100}}%;">
+						<img class="tweet_image" data-ng-attr-data-src="{{media.media_url_https}}" />
+					</div>
 				</div>
 			</div>
 			<aside class="tweet_info">
@@ -20,9 +55,9 @@
 					<span class="day">{{tweet.created_at | parseDay}}</span>
 					<span class="date">{{tweet.created_at | parseDate | date:"h:mm a"}}</span>
 				</div>
-				<div class="info favorites">{{tweet.favorite_count}}</div>
-				<div class="info retweets">{{tweet.retweet_count}}</div>
-				<div class="info link"><a target="_blank" ng-href="https://twitter.com/{{tweet.user.screen_name}}/status/{{tweet.id_str}}">Direct link</a></div>
+				<a class="info favorites">{{tweet.favorite_count}}</a>
+				<a class="info retweets">{{tweet.retweet_count}}</a>
+				<a class="info reply">Reply</a>
 			</aside>
 		</li>
 	</ul>

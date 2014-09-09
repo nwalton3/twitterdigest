@@ -3,6 +3,7 @@
  */
 
 @import "bootstrap/mixins/vendor-prefixes"
+// @import "../bower_components/normalize.scss/normalize"
 
 
 /* Fontawesome */
@@ -25,10 +26,16 @@ $blue2:  #9df
 $green:  #0bb
 $yellow: #eb3
 $red:    #e44
+$footer1: #777
+$footer2: #888
+$footer3: #aaa
 
 $info-height: 2em
 $info-top: 0
 $transition-speed: 200ms
+
+%transition-all
+	+transition(all $transition-speed ease)
 
 
 /* listDigest.css */
@@ -39,29 +46,52 @@ body
 	font-family: "fira-sans", sans-serif
 	font-weight: 100
 
-*
+*, *:before, *:after
 	position: relative
 	+box-sizing(border-box)
 
 
-h1
-	margin: 0 0 1em
-	text-align: center
+h1, h2
+	margin: 0 auto 1em
 	color: $red
 	font-size: 2.5em
 	font-family: "fira-sans", sans-serif
 	font-weight: 300
 	font-style: italic
+	max-width: 20.2em
 	.source
 		color: $yellow
 
-.tweets
+h1
+	// max-width: 21em
+	// .avatar
+	// 	position: absolute
+	// 	top: 0
+	// 	left: -48px
+
+h2
+	margin-bottom: 0.25em
+	input
+		background: transparent
+		border: none
+		max-width: 3em
+
+header
+	background: #000
+	border-bottom: 1px solid mix( #222, #333 )
+	padding: 0.5em
+	margin: -2em -5% 2em
+	+box-shadow( 0 0 10px #000 )
+
+
+
+.tweets, .lists
 	list-style: none
-	margin: 0 auto
+	margin: 0 auto 3em
 	padding: 0
 	max-width: 50em
 
-.tweet
+.tweet, .lists
 	color: #ddd
 	margin: 0.5em 0
 	border-radius: 0.75em
@@ -79,12 +109,18 @@ h1
 
 	a, a:link, a:visited
 		color: $blue1
+		@extend %transition-all
 		&.user
+			color: $green
+		&.show_media, &.show_media:before
 			color: $green
 	a:hover, a:active
 		color: $blue2
 		text-decoration: none
+		&.show_media, &.show_media:before
+			color: mix( $green, #fff, 70% )
 
+.tweet
 	.tweet_body
 		background-color: #333
 		font-size: 1.75em
@@ -92,24 +128,52 @@ h1
 		border-radius: 0.5em 0.5em 0.25em 0.25em
 		box-shadow: 0 0 2em mix(#222, #111), inset 0 2px 0.65em -1px #000
 		border-bottom: 1px solid #333
-		.rt
-			color: $green
+		.rt, .rt .user:hover
+			color: mix( $green, #fff, 60% )
 		.hashtag
 			color: $green
 		.openingquote
 			margin-left: -0.35em
 
-	.tweet_photo
-		margin-top: 1em
+	.tweet_media
+		margin-top: 0.25em
 		margin-right: 0.5em
+		.imgWrapper
+			margin: 0 auto
+			overflow: hidden
+			margin-top: 0.5em
+			@extend %transition-all
 		img
 			max-width: 100%
-			margin: 0 auto
 			display: block
+			position: absolute
+			top: 0
+			left: 0
+		.show_media
+			display: block
+			font-size: 0.7em
+			padding: 0.5em 1em
+			margin: -0.5em 0 -0.65em
+			@extend %transition-all
+			&:before
+				display: inline-block
+				content: $fa-var-caret-right
+				font-family: "Fontawesome"
+				margin-right: 0.35em
+				+rotate( 90deg )
+				@extend %transition-all
+		&.collapsed
+			.imgWrapper
+				margin-top: 0
+				padding-bottom: 0 !important
+			.show_media
+				&:before
+					+rotate( 0deg )
+
 
 	.tweet_info
 		padding: $info-top 1em 0.4em 1.5em
-		color: #777
+		color: $footer1
 		border-radius: 0 0 0.5em 0.5em
 		text-transform: lowercase
 		font-family: "ff-basic-gothic-sc-web-pro", sans-serif
@@ -120,37 +184,102 @@ h1
 		bottom: 0
 		width: 100%
 		height: $info-height
-		+transition(bottom $transition-speed ease)
+		@extend %transition-all
 
 		a, a:link, a:visited
-			color: #777
-		a:hover, a:active
-			color: #999
+			@extend %transition-all
+			color: $footer1
 
-		.favorites, .retweets, .link
+		.favorites, .retweets, .reply
+			color: $footer1
+			float: right
+			@extend %transition-all
 			&:before
+				@extend %transition-all
 				font-family: "Fontawesome"
 				margin-right: 0.35em
 				color: #555
+				top: 0.1em
 		.favorites
 			&:before
 				content: $fa-var-heart
-				font-size: 0.7em
+				// font-size: 0.7em
 		.retweets
 			&:before
 				content: $fa-var-retweet
-				font-size: 0.85em
-		.link
-			display: block 
-			position: absolute
-			right: 1.5em
-			top: $info-top
-			padding: 0
+				// font-size: 0.85em
+		.reply
 			&:before
-				content: $fa-var-angle-right
-				font-size: 0.75em
+				content: $fa-var-reply
+				// font-size: 0.85em
+	&:hover
+		.tweet_info
+			color: $footer2
+			.favorites, .retweets, .reply, a, a:link, a:visited
+				color: $footer2
+
+	.tweet_info:hover
+		color: $footer3
+		cursor: default
+		.favorites, .retweets, .reply
+			color: $footer3
+			&:hover, &:active
+				color: #eee
+		.favorites
+			&:before
+				color: mix( $footer1, $red, 75% )
+			&:hover, &:active
+				&:before
+					color: $red
+		.retweets
+			&:before
+				color: mix( $footer1, $yellow, 75% )
+			&:hover, &:active
+				&:before
+					color: $yellow
+		.reply
+			&:before
+				color: mix( $footer1, $green, 75% )
+			&:hover, &:active
+				&:before
+					color: $green
 
 	.info
 		display: inline-block
-		padding: 0.1em 0.5em
+		padding: 0.1em 0.75em 0.5em
 
+
+	&.ng-enter, &.ng-leave, &.ng-move, &.ng-add, &.ng-remove // Transitions for all
+		transition: all 300ms ease
+
+	&.ng-enter, &.ng-move, &.ng-add // Beginning state for adding tweet
+		opacity: 0
+		max-height: 0
+
+	&.ng-move.ng-move-active, &.ng-enter.ng-enter-active, &.ng-add.ng-add-active // End state for adding tweet
+		opacity: 1
+		max-height: 30em
+
+	&.ng-leave, &.ng-remove // Beginning state for removing tweet
+		opacity: 1
+		overflow: hidden
+
+	&.ng-leave.ng-leave-active, &.ng-remove.ng-remove-active // End state for removing tweet
+		opacity: 0
+		max-height: 0
+
+.lists 
+	margin: 0 auto 3em
+	padding: 1em 0 1.1em
+
+.list 
+	padding: 0
+	a
+		display: block
+		font-size: 1.5em
+		padding: 0.2em 1em
+		.screenName
+			color: #888
+		.slash
+			color: #666
+			margin: 0 -0.25em

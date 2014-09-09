@@ -50,6 +50,7 @@
 				var users = e.user_mentions;
 				var hashtags = e.hashtags;
 				var media = e.media;
+				var rt = tweet.retweeted_status;
 				var t = tweet.text;
 				var newt = t;
 				
@@ -70,7 +71,7 @@
 							if ( items == urls ) {
 								repl = '<a class="external_url" target="_blank" href="' + item.url + '">' + item.display_url + '</a>';
 							} else if ( items == users ) {
-								repl = '<a class="user" href="/#/user/' + item.id + '">@' + item.screen_name + "</a>";
+								repl = '<a class="user" href="/#/' + item.screen_name + '">@' + item.screen_name + "</a>";
 							} else if ( items == hashtags ) {
 								repl = '<a class="hashtag" target="_blank" href="https://twitter.com/hashtag/' + item.text + '?src=hash">#' + item.text + '</a>';
 							} else if ( items == media && item.type == 'photo' ) {
@@ -82,12 +83,17 @@
 					}
 				};
 
+				// Get the full original tweet text from the retweet entity
+				if ( rt ) {
+					var rt_handle = t.match(/RT\s@[0-9a-zA-Z_-]*\:/g);
+					newt = '<span class="rt">' + rt_handle + "</span> " + rt.text;
+				}
 
+				// Process all of the entities into better html
 				replaceEntities( urls );
 				replaceEntities( users );
 				replaceEntities( hashtags );
 				replaceEntities( media );
-				replaceString('RT ', '<span class="rt">RT</span> ');
 				replaceString(/^“/, '<span class="openingquote">“</span>');
 
 
