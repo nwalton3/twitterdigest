@@ -1,218 +1,101 @@
-/* listDigest.sass 
- */
-/* Fontawesome */
-/* FONT PATH
- * -------------------------- */
-@font-face {
-  font-family: 'FontAwesome';
-  src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0");
-  src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0") format("embedded-opentype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0") format("woff"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0") format("truetype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular") format("svg");
-  font-weight: normal;
-  font-style: normal; }
-/* Variables */
-.tweet a, .tweet a:link, .tweet a:visited, .lists a, .lists a:link, .lists a:visited, .tweet .tweet_media .imgWrapper, .tweet .tweet_media .show_media, .tweet .tweet_media .show_media:before, .tweet .tweet_info, .tweet .tweet_info a, .tweet .tweet_info a:link, .tweet .tweet_info a:visited, .tweet .tweet_info .favorites, .tweet .tweet_info .retweets, .tweet .tweet_info .reply, .tweet .tweet_info .favorites:before, .tweet .tweet_info .retweets:before, .tweet .tweet_info .reply:before {
-  -webkit-transition: all 200ms ease;
-  -o-transition: all 200ms ease;
-  transition: all 200ms ease; }
+/* listDigest.sass  */
+/* FONT PATH -------------------------- */
+@font-face { font-family: 'FontAwesome'; src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0"); src: url("../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0") format("embedded-opentype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0") format("woff"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0") format("truetype"), url("../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular") format("svg"); font-weight: normal; font-style: normal; }
+h1 a, h1 .avatar, .page-header input, .page-header #twitterHandle, .tweet a, .tweet a:link, .tweet a:visited, .lists a, .lists a:link, .lists a:visited, .tweet .tweet_media .imgWrapper, .tweet .tweet_media .show_media, .tweet .tweet_media .show_media:before, .tweet .tweet_info, .tweet .tweet_info a, .tweet .tweet_info a:link, .tweet .tweet_info a:visited, .tweet .tweet_info .favorites, .tweet .tweet_info .retweets, .tweet .tweet_info .reply, .tweet .tweet_info .favorites:before, .tweet .tweet_info .retweets:before, .tweet .tweet_info .reply:before, .show-more { -webkit-transition: all 200ms ease; -o-transition: all 200ms ease; transition: all 200ms ease; }
 
-/* listDigest.css */
-body {
-  margin: 2em 5% 10em;
-  background-color: #2a2a2a;
-  font-family: "fira-sans", sans-serif;
-  font-weight: 100; }
+/* General */
+*, *:before, *:after { position: relative; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
-*, *:before, *:after {
-  position: relative;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
+body { margin: 2em 5% 10em; background-color: #2a2a2a; font-family: "fira-sans", sans-serif; font-weight: 100; overflow-x: hidden; }
 
-h1, h2 {
-  margin: 0 auto 1em;
-  color: #ee4444;
-  font-size: 2.5em;
-  font-family: "fira-sans", sans-serif;
-  font-weight: 300;
-  font-style: italic;
-  max-width: 20.2em; }
-  h1 .source, h2 .source {
-    color: #eebb33; }
+h1, h2 { font-family: "fira-sans", sans-serif; font-weight: 300; font-style: italic; margin: 0 auto; }
 
-h2 {
-  margin-bottom: 0.25em; }
-  h2 input {
-    background: transparent;
-    border: none;
-    max-width: 3em; }
+h1 { font-size: 2.5em; max-width: 20.2em; }
+h1 a:hover, h1 a:focus { text-decoration: none; }
+h1 .source { color: #eebb33; }
+h1 .source:hover, h1 .source:focus { color: #f1c85b; }
+h1 .screen_name { color: #ee4444; }
+h1 .screen_name:hover, h1 .screen_name:focus { color: #f16969; }
+@media (min-width: 54em) { h1 .avatar { margin-left: -48px; } }
 
-header {
-  background: black;
-  border-bottom: 1px solid #2a2a2a;
-  padding: 0.5em;
-  margin: -2em -5% 2em;
-  -webkit-box-shadow: 0 0 10px black;
-  box-shadow: 0 0 10px black; }
+h2 { margin-bottom: 0.25em; color: #666666; font-size: 2em; max-width: 25em; }
 
-.tweets, .lists {
-  list-style: none;
-  margin: 0 auto 3em;
-  padding: 0;
-  max-width: 50em; }
+.page-header { margin: -2em -6% 0; background: black; border-bottom: 1px solid #222222; padding: 0.75em; z-index: 1; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.65); }
+.page-header .search { margin-left: 5%; }
+.page-header label { color: #999999; font-weight: bold; }
+.page-header #twitterHandle { background-color: #666666; border-color: #777777; }
+.page-header #twitterHandle:focus { background-color: #999999; border-color: #aaaaaa; }
+.page-header .logged-in-user { position: absolute; top: 0.75em; right: 5%; }
 
-.tweet, .lists {
-  color: #dddddd;
-  margin: 0.5em 0;
-  border-radius: 0.75em;
-  background-color: #333333;
-  box-shadow: inset 0 -1px 0.5em -1px black;
-  border-bottom: 1px solid #333333;
-  overflow: hidden;
-  padding-bottom: 2em;
-  -webkit-transition: padding 200ms ease;
-  -o-transition: padding 200ms ease;
-  transition: padding 200ms ease; }
-  .tweet a, .tweet a:link, .tweet a:visited, .lists a, .lists a:link, .lists a:visited {
-    color: #44bbee; }
-    .tweet a.user, .tweet a:link.user, .tweet a:visited.user, .lists a.user, .lists a:link.user, .lists a:visited.user {
-      color: #00bbbb; }
-    .tweet a.show_media, .tweet a.show_media:before, .tweet a:link.show_media, .tweet a:link.show_media:before, .tweet a:visited.show_media, .tweet a:visited.show_media:before, .lists a.show_media, .lists a.show_media:before, .lists a:link.show_media, .lists a:link.show_media:before, .lists a:visited.show_media, .lists a:visited.show_media:before {
-      color: #00bbbb; }
-  .tweet a:hover, .tweet a:active, .lists a:hover, .lists a:active {
-    color: #99ddff;
-    text-decoration: none; }
-    .tweet a:hover.show_media, .tweet a:hover.show_media:before, .tweet a:active.show_media, .tweet a:active.show_media:before, .lists a:hover.show_media, .lists a:hover.show_media:before, .lists a:active.show_media, .lists a:active.show_media:before {
-      color: #4ccfcf; }
+.list-header { background: #222222; border-bottom: 1px solid #333333; padding: 1.5em 0 1.25em; margin: 0 -6% 1em; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5); }
 
-.tweet .tweet_body {
-  background-color: #333333;
-  font-size: 1.75em;
-  padding: 1em 0.75em 0.8em 1.35em;
-  border-radius: 0.5em 0.5em 0.25em 0.25em;
-  box-shadow: 0 0 2em #191919, inset 0 2px 0.65em -1px black;
-  border-bottom: 1px solid #333333; }
-  .tweet .tweet_body .rt, .tweet .tweet_body .rt .user:hover {
-    color: #66d6d6; }
-  .tweet .tweet_body .hashtag {
-    color: #00bbbb; }
-  .tweet .tweet_body .openingquote {
-    margin-left: -0.35em; }
-.tweet .tweet_media {
-  margin-top: 0.25em;
-  margin-right: 0.5em; }
-  .tweet .tweet_media .imgWrapper {
-    margin: 0 auto;
-    overflow: hidden;
-    margin-top: 0.5em; }
-  .tweet .tweet_media img {
-    max-width: 100%;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0; }
-  .tweet .tweet_media .show_media {
-    display: block;
-    font-size: 0.7em;
-    padding: 0.5em 1em;
-    margin: -0.5em 0 -0.65em; }
-    .tweet .tweet_media .show_media:before {
-      display: inline-block;
-      content: "\f0da";
-      font-family: "Fontawesome";
-      margin-right: 0.35em;
-      -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-      -o-transform: rotate(90deg);
-      transform: rotate(90deg); }
-  .tweet .tweet_media.collapsed .imgWrapper {
-    margin-top: 0;
-    padding-bottom: 0 !important; }
-  .tweet .tweet_media.collapsed .show_media:before {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg); }
-.tweet .tweet_info {
-  padding: 0 1em 0.4em 1.5em;
-  color: #777777;
-  border-radius: 0 0 0.5em 0.5em;
-  text-transform: lowercase;
-  font-family: "ff-basic-gothic-sc-web-pro", sans-serif;
-  font-weight: 300;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2em; }
-  .tweet .tweet_info a, .tweet .tweet_info a:link, .tweet .tweet_info a:visited {
-    color: #777777; }
-  .tweet .tweet_info .favorites, .tweet .tweet_info .retweets, .tweet .tweet_info .reply {
-    color: #777777;
-    float: right; }
-    .tweet .tweet_info .favorites:before, .tweet .tweet_info .retweets:before, .tweet .tweet_info .reply:before {
-      font-family: "Fontawesome";
-      margin-right: 0.35em;
-      color: #555555;
-      top: 0.1em; }
-  .tweet .tweet_info .favorites:before {
-    content: "\f004"; }
-  .tweet .tweet_info .retweets:before {
-    content: "\f079"; }
-  .tweet .tweet_info .reply:before {
-    content: "\f112"; }
-.tweet:hover .tweet_info {
-  color: #888888; }
-  .tweet:hover .tweet_info .favorites, .tweet:hover .tweet_info .retweets, .tweet:hover .tweet_info .reply, .tweet:hover .tweet_info a, .tweet:hover .tweet_info a:link, .tweet:hover .tweet_info a:visited {
-    color: #888888; }
-.tweet .tweet_info:hover {
-  color: #aaaaaa;
-  cursor: default; }
-  .tweet .tweet_info:hover .favorites, .tweet .tweet_info:hover .retweets, .tweet .tweet_info:hover .reply {
-    color: #aaaaaa; }
-    .tweet .tweet_info:hover .favorites:hover, .tweet .tweet_info:hover .favorites:active, .tweet .tweet_info:hover .retweets:hover, .tweet .tweet_info:hover .retweets:active, .tweet .tweet_info:hover .reply:hover, .tweet .tweet_info:hover .reply:active {
-      color: #eeeeee; }
-  .tweet .tweet_info:hover .favorites:before {
-    color: #946a6a; }
-  .tweet .tweet_info:hover .favorites:hover:before, .tweet .tweet_info:hover .favorites:active:before {
-    color: #ee4444; }
-  .tweet .tweet_info:hover .retweets:before {
-    color: #948866; }
-  .tweet .tweet_info:hover .retweets:hover:before, .tweet .tweet_info:hover .retweets:active:before {
-    color: #eebb33; }
-  .tweet .tweet_info:hover .reply:before {
-    color: #598888; }
-  .tweet .tweet_info:hover .reply:hover:before, .tweet .tweet_info:hover .reply:active:before {
-    color: #00bbbb; }
-.tweet .info {
-  display: inline-block;
-  padding: 0.1em 0.75em 0.5em; }
-.tweet.ng-enter, .tweet.ng-leave, .tweet.ng-move, .tweet.ng-add, .tweet.ng-remove {
-  transition: all 300ms ease; }
-.tweet.ng-enter, .tweet.ng-move, .tweet.ng-add {
-  opacity: 0;
-  max-height: 0; }
-.tweet.ng-move.ng-move-active, .tweet.ng-enter.ng-enter-active, .tweet.ng-add.ng-add-active {
-  opacity: 1;
-  max-height: 30em; }
-.tweet.ng-leave, .tweet.ng-remove {
-  opacity: 1;
-  overflow: hidden; }
-.tweet.ng-leave.ng-leave-active, .tweet.ng-remove.ng-remove-active {
-  opacity: 0;
-  max-height: 0; }
+.follow_user { position: absolute; font-size: 1rem; top: 0; right: 0; color: #666666; }
 
-.lists {
-  margin: 0 auto 3em;
-  padding: 1em 0 1.1em; }
+/* Tweets */
+.tweets, .lists { list-style: none; margin: 0 auto 3em; padding: 0; max-width: 50em; }
 
-.list {
-  padding: 0; }
-  .list a {
-    display: block;
-    font-size: 1.5em;
-    padding: 0.2em 1em; }
-    .list a .screenName {
-      color: #888888; }
-    .list a .slash {
-      color: #666666;
-      margin: 0 -0.25em; }
+.tweet, .lists { color: #dddddd; margin: 0.5em 0; border-radius: 0.75em; background-color: #333333; box-shadow: inset 0 -1px 0.5em -1px black; border-bottom: 1px solid #333333; overflow: hidden; padding-bottom: 2em; -webkit-transition: padding 200ms ease; -o-transition: padding 200ms ease; transition: padding 200ms ease; }
+.tweet a, .tweet a:link, .tweet a:visited, .lists a, .lists a:link, .lists a:visited { color: #44bbee; }
+.tweet a.user, .tweet a:link.user, .tweet a:visited.user, .lists a.user, .lists a:link.user, .lists a:visited.user { color: #00bbbb; }
+.tweet a.show_media, .tweet a.show_media:before, .tweet a:link.show_media, .tweet a:link.show_media:before, .tweet a:visited.show_media, .tweet a:visited.show_media:before, .lists a.show_media, .lists a.show_media:before, .lists a:link.show_media, .lists a:link.show_media:before, .lists a:visited.show_media, .lists a:visited.show_media:before { color: #00bbbb; }
+.tweet a:hover, .tweet a:active, .lists a:hover, .lists a:active { color: #99ddff; text-decoration: none; }
+.tweet a:hover.show_media, .tweet a:hover.show_media:before, .tweet a:active.show_media, .tweet a:active.show_media:before, .lists a:hover.show_media, .lists a:hover.show_media:before, .lists a:active.show_media, .lists a:active.show_media:before { color: #4ccfcf; }
+
+.tweet .tweet_body { background-color: #333333; font-size: 1.75em; padding: 1em 0.75em 0.8em 1.35em; border-radius: 0.5em 0.5em 0.25em 0.25em; box-shadow: 0 0 2em #191919, inset 0 2px 0.65em -1px black; border-bottom: 1px solid #333333; }
+.tweet .tweet_body .rt, .tweet .tweet_body .rt .user:hover { color: #66d6d6; }
+.tweet .tweet_body .hashtag { color: #00bbbb; }
+.tweet .tweet_body .openingquote { margin-left: -0.35em; }
+.tweet .tweet_media { margin-top: 0.25em; margin-right: 0.5em; }
+.tweet .tweet_media .imgWrapper { margin: 0 auto; overflow: hidden; margin-top: 0.5em; }
+.tweet .tweet_media img { max-width: 100%; display: block; position: absolute; top: 0; left: 0; }
+.tweet .tweet_media .show_media { display: block; font-size: 0.7em; padding: 0.5em 1em; margin: -0.5em 0 -0.65em; }
+.tweet .tweet_media .show_media:before { display: inline-block; content: "\f0da"; font-family: "Fontawesome"; margin-right: 0.35em; -webkit-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
+.tweet .tweet_media.collapsed .imgWrapper { margin-top: 0; padding-bottom: 0 !important; }
+.tweet .tweet_media.collapsed .show_media:before { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); -o-transform: rotate(0deg); transform: rotate(0deg); }
+.tweet .tweet_info { padding: 0 1em 0.4em 1.5em; color: #777777; border-radius: 0 0 0.5em 0.5em; text-transform: lowercase; font-family: "ff-basic-gothic-sc-web-pro", sans-serif; font-weight: 300; position: absolute; left: 0; bottom: 0; width: 100%; height: 2em; }
+.tweet .tweet_info a, .tweet .tweet_info a:link, .tweet .tweet_info a:visited { color: #777777; }
+.tweet .tweet_info .favorites, .tweet .tweet_info .retweets, .tweet .tweet_info .reply { color: #777777; float: right; }
+.tweet .tweet_info .favorites:before, .tweet .tweet_info .retweets:before, .tweet .tweet_info .reply:before { font-family: "Fontawesome"; margin-right: 0.35em; color: #555555; top: 0.1em; }
+.tweet .tweet_info .favorites:before { content: "\f004"; }
+.tweet .tweet_info .favorites.favorite-true { color: #aaaaaa; }
+.tweet .tweet_info .favorites.favorite-true:before { color: #ee4444; }
+.tweet .tweet_info .retweets:before { content: "\f079"; }
+.tweet .tweet_info .retweets.retweeted-true { color: #aaaaaa; }
+.tweet .tweet_info .retweets.retweeted-true:before { color: #eebb33; }
+.tweet .tweet_info .reply:before { content: "\f112"; }
+.tweet:hover .tweet_info { color: #888888; }
+.tweet:hover .tweet_info .favorites, .tweet:hover .tweet_info .retweets, .tweet:hover .tweet_info .reply, .tweet:hover .tweet_info a, .tweet:hover .tweet_info a:link, .tweet:hover .tweet_info a:visited { color: #888888; }
+.tweet .tweet_info:hover { color: #aaaaaa; cursor: default; }
+.tweet .tweet_info:hover .favorites, .tweet .tweet_info:hover .retweets, .tweet .tweet_info:hover .reply { color: #aaaaaa; }
+.tweet .tweet_info:hover .favorites:hover, .tweet .tweet_info:hover .favorites:active, .tweet .tweet_info:hover .retweets:hover, .tweet .tweet_info:hover .retweets:active, .tweet .tweet_info:hover .reply:hover, .tweet .tweet_info:hover .reply:active { color: #eeeeee; }
+.tweet .tweet_info:hover .favorites:before { color: #946a6a; }
+.tweet .tweet_info:hover .favorites:hover:before, .tweet .tweet_info:hover .favorites:active:before, .tweet .tweet_info:hover .favorites.favorite-true:before { color: #ee4444; }
+.tweet .tweet_info:hover .retweets:before { color: #948866; }
+.tweet .tweet_info:hover .retweets:hover:before, .tweet .tweet_info:hover .retweets:active:before, .tweet .tweet_info:hover .retweets.retweeted-true:before { color: #eebb33; }
+.tweet .tweet_info:hover .reply:before { color: #598888; }
+.tweet .tweet_info:hover .reply:hover:before, .tweet .tweet_info:hover .reply:active:before { color: #00bbbb; }
+.tweet .info { display: inline-block; padding: 0.1em 0.75em 0.5em; }
+
+/* Lists */
+.lists { margin: 0 auto 3em; padding: 1em 0 1.1em; }
+
+.list { padding: 0; }
+.list a { display: block; font-size: 1.5em; padding: 0.2em 1em; }
+.list a .screenName { color: #888888; }
+.list a .slash { color: #666666; margin: 0 -0.25em; }
+
+.show-more { font-size: 1.5em; color: #999999; display: block; margin: 0 auto; padding: 0.75em 1.5em 0.8em; max-width: 33.3333em; background-color: #272727; border-top: 1px solid #222222; border-bottom: 1px solid #333333; border-radius: 0.5em; }
+.show-more:hover, .show-more:focus { color: #cccccc; background-color: #222222; border-top-color: #111111; border-bottom-color: #373737; text-decoration: none; }
+
+/* Components */
+.dropdown-menu { max-height: 50vw; overflow: scroll; }
+
+/* Animations */
+.animate { -webkit-transition: all 200ms ease; -o-transition: all 200ms ease; transition: all 200ms ease; }
+.animate.ng-hide-add, .animate.ng-hide-remove { /* ensure visibility during the transition */ }
+.animate.ng-enter, .animate.ng-move, .animate.ng-add, .animate.ng-hide-add { opacity: 0; max-height: 0; }
+.animate.ng-move.ng-move-active, .animate.ng-enter.ng-enter-active, .animate.ng-add.ng-add-active, .animate.ng-hide-add.ng-hide-add-active { opacity: 1; max-height: 30em; }
+.animate.ng-leave, .animate.ng-remove, .animate.ng-hide-remove { opacity: 1; max-height: 30em; }
+.animate.ng-leave.ng-leave-active, .animate.ng-remove.ng-remove-active, .animate.ng-hide-remove.ng-hide-remove-active { opacity: 0; max-height: 0; }
+
+/*# sourceMappingURL=listDigest.css.map */

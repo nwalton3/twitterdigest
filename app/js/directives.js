@@ -1,11 +1,51 @@
-'use strict';
+(function(){
 
-/* Directives */
+	'use strict';
 
 
-angular.module('listDigest.directives', []).
-  directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }]);
+	/* Directives */
+
+	var ldDirectives = angular.module('listDigest.directives', []);
+
+
+	ldDirectives.directive('contenteditable', ['$sce',
+		function( $sce ) {
+			return {
+				restrict: 'A', // only activate on element attribute
+				require: '?ngModel', // get a hold of NgModelController
+				link: function(scope, element, attrs, ngModel) {
+					if (!ngModel) return; // do nothing if no ng-model
+
+					// Specify how UI should be updated
+					ngModel.$render = function() {
+						element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
+					};
+
+					// Listen for change events to enable binding
+					element.on('blur keyup change', function() {
+						scope.$apply(read);
+					});
+					read(); // initialize
+
+					// Write data to the model
+					function read() {
+						var html = element.html();
+						// When we clear the content editable the browser leaves a <br> behind
+						// If strip-br attribute is provided then we strip this out
+						if ( html == '<br>' ) {
+							html = '';
+						}
+
+						// Convert to number if text is actually a number
+						if ( !isNaN(html) ) {
+							html = parseInt(html);
+						}
+						ngModel.$setViewValue(html);
+					}
+				}
+			};
+		}
+	]);
+
+
+})();

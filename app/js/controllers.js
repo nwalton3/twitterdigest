@@ -11,26 +11,59 @@
 	]);
 
 
-	ldControllers.controller('ListCtrl', ['$scope', '$routeParams', '$location', 'Lists', '_',
-		function($scope, $routeParams, $location, Lists, _) {
+
+	// Header
+	ldControllers.controller('HeaderCtrl', [ '$scope', 'TwitterAPI',
+		function( $scope, TwitterAPI ) {
+
+			// Get info about me
+			if( !$scope.my ) {
+				$scope.my = TwitterAPI.get( { path: 'account/verify_credentials', q: 'skip_status=true&include_entities=false' },
+					function() { // Success
+						$scope.my.friends = TwitterAPI.get( { path: 'friends/list', q: 'count=200&skip_status=true&include_user_entities=false' } );
+						$scope.my.lists = TwitterAPI.query( { path: 'lists/list', q: 'reverse=true' } );
+						$scope.my.settings = TwitterAPI.get( { path: 'account/settings' } );
+						console.log( $scope.my );
+					}, function(e) { // Error
+						console.log("error:");
+						console.log(e);
+					}
+				);
+			}
+
+
+			// Perform a search
+			$scope.findUser = function() {
+				$location.path('/' + $scope.screen_name );
+			};
+
+		}
+	]);
+
+
+
+	// List page
+	ldControllers.controller('ListCtrl', ['$scope', '$routeParams', '$location', 'TwitterAPI', '_', 'TweenMax',
+		function( $scope, $routeParams, $location, TwitterAPI, _, TweenMax ) {
 
 			// Define variables
 			$scope.screen_name = '';
+			$scope.tweets = [];
+			$scope.lists = [];
+
 			$scope.params = $routeParams;
 			$scope.numTweets = 200;
 			$scope.tweetsToShow = 20;
 			$scope.isList = false;
 			$scope.isUser = false;
-			var path = '';
-			var query = '';
 
 
 			// This is a list
 			if ( $scope.params.listname ) {
-				$scope.path = 'lists/statuses.json';
+				$scope.path = 'lists/statuses';
 				$scope.query = 'count=' + $scope.numTweets + '&slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username;
 
-				$scope.list = Lists.get( { path: 'lists/show.json', q: 'slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username }, 
+				$scope.list = TwitterAPI.get( { path: 'lists/show', q: 'slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username }, 
 					function(){ // success
 						$scope.user = $scope.list.user;
 						$scope.isList = true;
@@ -39,11 +72,10 @@
 			} 
 			// This is a user
 			else if ( $scope.params.username ) {
-				$scope.path = 'statuses/user_timeline.json';
+				$scope.path = 'statuses/user_timeline';
 				$scope.query = 'count=' + $scope.numTweets + '&screen_name=' + $scope.params.username;
 
-				$scope.lists = Lists.query( { path: 'lists/list.json', q: 'screen_name=' + $scope.params.username } );
-				$scope.user = Lists.get( { path: 'users/show.json', q: 'screen_name=' + $scope.params.username },
+				$scope.user = TwitterAPI.get( { path: 'users/show', q: 'screen_name=' + $scope.params.username },
 					function() { // success
 						$scope.isUser = true;
 					}
@@ -51,9 +83,11 @@
 			} 
 
 
+
+
 			// Query the API
 			if ( $scope.path && $scope.query ) {
-				$scope.tweets = Lists.query({ 
+				$scope.tweets = TwitterAPI.query({ 
 						path: $scope.path, 
 						q: $scope.query,
 					}, 
@@ -75,35 +109,136 @@
 
 
 
+
+
+			// Follow a user
+			$scope.follow = function( user ) {
+				var user_id = user.id_str;
+				var followed = TwitterAPI.save( { path: 'friendships/create', id: user_id },
+					function() { // success
+						if ( followed.errors ) {
+							console.log( 'ERROR: ' + followed.errors[0].message );
+							return;
+						}
+						user.following = true;
+					}
+				);
+			};
+
+
+
+			// Favorite a tweet
+			$scope.favorite = function( tweet ) {
+				var fav = tweet.favorited;
+
+				var favorite = TwitterAPI.save( { path: 'favorites/create', id: tweet.id_str },
+					function() { // success
+
+						if ( favorite.errors ) {
+							console.log( 'ERROR: ' + favorite.errors[0].message );
+							return;
+						}
+						tweet.favorited = true;
+						tweet.favorite_count += 1;
+					}
+				);
+			};
+
+
+
+			// Retweet a tweet
+			$scope.retweet = function( tweet ) {
+				var rt = tweet.retweeted;
+
+				var retweet = TwitterAPI.save( { path: 'statuses/retweet/' + tweet.id_str },
+					function() { // success
+
+						if ( retweet.errors ) {
+							console.log( 'ERROR: ' + retweet.errors[0].message );
+							return;
+						}
+						tweet.retweeted = true;
+						tweet.retweet_count += 1;
+					}
+				);
+			};
+
+
+
+			// Reply to a tweet
+			$scope.reply = function( e ) {
+				console.log("reply clicked.");
+			};
+
+
+
 			// Perform a search
 			$scope.findUser = function() {
 				$location.path('/' + $scope.screen_name );
 			};
 
 
-			// Sort function
+
+			// Show more tweets
+			$scope.showMoreTweets = function() {
+				if ( $scope.tweetsToShow + 10 <= $scope.numTweets ) {
+					$scope.tweetsToShow += 10;
+				} 
+			};
+
+
+
+			// Sort tweets
 			$scope.tweetSort = function( tweet ) {
 
-				var retweet_weight = 1;
-				var favorite_weight = 1.5;
-				var follower_weight = -0.5;
-				// var listed_weight = 0.5;
+				var retweet_weight, favorite_weight, follower_weight, link_weight, mention_weight, listed_weight,
+					retweet_index, favorite_count, favorite_index, follower_index, link_index, mention_index, listed_index,
+					rt_value, fav_value, fol_value, link_value, mention_value, lst_value, index;
 
-				var retweet_index = tweet.retweet_count / $scope.maxRetweets;
-				var favorite_index = tweet.favorite_count / $scope.maxFavorites;
-				var follower_index = tweet.user.followers_count / $scope.maxFollowers;
-				// var listed_index = tweet.user.listed_count / $scope.maxListed;
+				retweet_weight = 1;
+				favorite_weight = 1.5;
+				follower_weight = -0.5;
+				link_weight = 0.25;
+				mention_weight = 0.125;
+				// listed_weight = 0.5;
 
-				var rt_value  = retweet_index * retweet_weight;
-				var fav_value = favorite_index * favorite_weight;
-				var fol_value = follower_index * follower_weight;
-				// var lst_value = listed_index * listed_weight;
+				retweet_index = tweet.retweet_count / $scope.maxRetweets;
+				favorite_count = tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count;
+				favorite_index = favorite_count / $scope.maxFavorites;
+				follower_index = tweet.user.followers_count / $scope.maxFollowers;
+				link_index = tweet.entities.urls.length;
+				mention_index = tweet.entities.user_mentions.length;
+				// listed_index = tweet.user.listed_count / $scope.maxListed;
 
-				var index = rt_value + fav_value + fol_value /* + lst_value */;
+				rt_value  = retweet_index * retweet_weight;
+				fav_value = favorite_index * favorite_weight;
+				fol_value = follower_index * follower_weight;
+				link_value = link_index * link_weight;
+				mention_value = mention_weight * mention_index;
+				// lst_value = listed_index * listed_weight;
+
+				index = rt_value + fav_value + fol_value + link_value + mention_value;
 
 				return -1 * index;
+			};
+
+
+
+			// Sort Users
+			$scope.userSort = function( user ) {
+				return -1 * user.followers_count;
 			}
 
+
+
+			// Sort Lists
+			$scope.listSort = function( list ) {
+				return list.name;
+			}
+
+
+
+			// Load and show a tweet's media (photo)
 			$scope.showMedia = function( e ) {
 				var el = e.target;
 
@@ -127,44 +262,7 @@
 
 				el.wrapper.toggleClass('collapsed');
 			};
-		}
-	]);
 
-
-
-
-
-	ldControllers.directive('contenteditable', ['$sce',
-		function( $sce ) {
-			return {
-				restrict: 'A', // only activate on element attribute
-				require: '?ngModel', // get a hold of NgModelController
-				link: function(scope, element, attrs, ngModel) {
-					if (!ngModel) return; // do nothing if no ng-model
-
-					// Specify how UI should be updated
-					ngModel.$render = function() {
-						element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
-					};
-
-					// Listen for change events to enable binding
-					element.on('blur keyup change', function() {
-						scope.$apply(read);
-					});
-					read(); // initialize
-
-					// Write data to the model
-					function read() {
-						var html = element.html();
-						// When we clear the content editable the browser leaves a <br> behind
-						// If strip-br attribute is provided then we strip this out
-						if ( html == '<br>' ) {
-							html = '';
-						}
-						ngModel.$setViewValue(html);
-					}
-				}
-			};
 		}
 	]);
 

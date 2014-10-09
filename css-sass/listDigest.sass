@@ -2,24 +2,30 @@
  * listDigest.sass 
  */
 
+
 @import "bootstrap/mixins/vendor-prefixes"
 // @import "../bower_components/normalize.scss/normalize"
 
 
-/* Fontawesome */
+// Fontawesome
 
 $fa-path: "../bower_components/font-awesome/"
+$fa-font-path: "../bower_components/font-awesome/fonts"
 
 @import "../bower_components/font-awesome/scss/mixins"
 @import "../bower_components/font-awesome/scss/variables"
-
-$fa-font-path: "../bower_components/font-awesome/fonts"
 @import "../bower_components/font-awesome/scss/path"
 
 
 
 
-/* Variables */
+
+
+
+
+
+
+// Variables
 
 $blue1:  #4be
 $blue2:  #9df
@@ -38,52 +44,116 @@ $transition-speed: 200ms
 	+transition(all $transition-speed ease)
 
 
-/* listDigest.css */
+
+
+
+
+
+
+
+
+
+
+
+/* General */
+
+
+*, *:before, *:after
+	position: relative
+	+box-sizing(border-box)
 
 body
 	margin: 2em 5% 10em
 	background-color: mix(#222, #333)
 	font-family: "fira-sans", sans-serif
 	font-weight: 100
-
-*, *:before, *:after
-	position: relative
-	+box-sizing(border-box)
+	overflow-x: hidden
 
 
 h1, h2
-	margin: 0 auto 1em
-	color: $red
-	font-size: 2.5em
 	font-family: "fira-sans", sans-serif
 	font-weight: 300
 	font-style: italic
-	max-width: 20.2em
-	.source
-		color: $yellow
+	margin: 0 auto
 
 h1
-	// max-width: 21em
-	// .avatar
-	// 	position: absolute
-	// 	top: 0
-	// 	left: -48px
+	font-size: 2.5em
+	max-width: 20.2em
+	a
+		@extend %transition-all
+		&:hover, &:focus
+			text-decoration: none
+	.source
+		color: $yellow
+		&:hover, &:focus
+			color: mix($yellow, white, 80%)
+	.screen_name
+		color: $red
+		&:hover, &:focus
+			color: mix($red, white, 80%)
+	.avatar
+		@extend %transition-all
+	@media (min-width: 54em)
+		.avatar
+			margin-left: -48px
 
 h2
 	margin-bottom: 0.25em
-	input
-		background: transparent
-		border: none
-		max-width: 3em
+	color: #666
+	font-size: 2em
+	max-width: 25em
 
-header
+
+.page-header
+	margin: -2em -6% 0
 	background: #000
-	border-bottom: 1px solid mix( #222, #333 )
-	padding: 0.5em
-	margin: -2em -5% 2em
-	+box-shadow( 0 0 10px #000 )
+	border-bottom: 1px solid #222
+	padding: 0.75em
+	z-index: 1
+	box-shadow: 0px 0px 15px rgba(0,0,0,0.65)
+	.search
+		margin-left: 5%
+	label
+		color: #999
+		font-weight: bold
+	input
+		@extend %transition-all
+	#twitterHandle
+		background-color: #666
+		border-color: #777
+		@extend %transition-all
+		&:focus
+			background-color: #999
+			border-color: #aaa
+	.logged-in-user
+		position: absolute
+		top: 0.75em
+		right: 5%
+
+.list-header
+	background: #222
+	border-bottom: 1px solid #333
+	padding: 1.5em 0 1.25em
+	margin: 0 -6% 1em
+	box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5)
+
+.follow_user
+	position: absolute
+	font-size: 1rem
+	top: 0
+	right: 0
+	color: #666
 
 
+
+
+
+
+
+
+
+
+/* Tweets */
 
 .tweets, .lists
 	list-style: none
@@ -204,10 +274,18 @@ header
 			&:before
 				content: $fa-var-heart
 				// font-size: 0.7em
+			&.favorite-true
+				color: $footer3
+				&:before
+					color: $red
 		.retweets
 			&:before
 				content: $fa-var-retweet
 				// font-size: 0.85em
+			&.retweeted-true
+				color: $footer3
+				&:before
+					color: $yellow
 		.reply
 			&:before
 				content: $fa-var-reply
@@ -228,13 +306,13 @@ header
 		.favorites
 			&:before
 				color: mix( $footer1, $red, 75% )
-			&:hover, &:active
+			&:hover, &:active, &.favorite-true
 				&:before
 					color: $red
 		.retweets
 			&:before
 				color: mix( $footer1, $yellow, 75% )
-			&:hover, &:active
+			&:hover, &:active, &.retweeted-true
 				&:before
 					color: $yellow
 		.reply
@@ -249,24 +327,18 @@ header
 		padding: 0.1em 0.75em 0.5em
 
 
-	&.ng-enter, &.ng-leave, &.ng-move, &.ng-add, &.ng-remove // Transitions for all
-		transition: all 300ms ease
 
-	&.ng-enter, &.ng-move, &.ng-add // Beginning state for adding tweet
-		opacity: 0
-		max-height: 0
 
-	&.ng-move.ng-move-active, &.ng-enter.ng-enter-active, &.ng-add.ng-add-active // End state for adding tweet
-		opacity: 1
-		max-height: 30em
 
-	&.ng-leave, &.ng-remove // Beginning state for removing tweet
-		opacity: 1
-		overflow: hidden
 
-	&.ng-leave.ng-leave-active, &.ng-remove.ng-remove-active // End state for removing tweet
-		opacity: 0
-		max-height: 0
+
+
+
+
+
+
+
+/* Lists */
 
 .lists 
 	margin: 0 auto 3em
@@ -283,3 +355,99 @@ header
 		.slash
 			color: #666
 			margin: 0 -0.25em
+
+.show-more
+	@extend %transition-all
+	font-size: 1.5em
+	color: #999
+	display: block
+	margin: 0 auto
+	padding: 0.75em 1.5em 0.8em
+	max-width: 33.3333em
+	background-color: mix(#222, #333, 70%)
+	border-top: 1px solid #222
+	border-bottom: 1px solid #333
+	border-radius: 0.5em
+	&:hover, &:focus
+		color: #ccc
+		background-color: #222
+		border-top-color: #111
+		border-bottom-color: mix(#333, #444, 75%)
+		text-decoration: none
+
+
+
+
+
+
+
+
+
+
+/* Components */
+.dropdown-menu
+	max-height: 50vw
+	overflow: scroll
+
+
+
+
+
+
+
+
+/* Animations */
+
+.animate
+	+transition( all 200ms ease )
+
+	&.ng-hide-add, &.ng-hide-remove
+		/* ensure visibility during the transition */
+		// display: block !important /* yes, important */
+
+	// Beginning state for animating in
+	&.ng-enter, 
+	&.ng-move, 
+	&.ng-add, 
+	&.ng-hide-add
+		opacity: 0
+		max-height: 0
+
+	// End state for animating in
+	&.ng-move.ng-move-active, 
+	&.ng-enter.ng-enter-active, 
+	&.ng-add.ng-add-active,
+	&.ng-hide-add.ng-hide-add-active
+		opacity: 1
+		max-height: 30em
+
+	// Beginning state for animating out
+	&.ng-leave, 
+	&.ng-remove,
+	&.ng-hide-remove
+		opacity: 1
+		max-height: 30em
+
+	// End state for animating out
+	&.ng-leave.ng-leave-active,  
+	&.ng-remove.ng-remove-active,
+	&.ng-hide-remove.ng-hide-remove-active
+
+		opacity: 0
+		max-height: 0
+
+	// &.ng-enter-stagger, 
+	// &.ng-leave-stagger, 
+	// &.ng-move-stagger
+	// 	/* 200ms will be applied between each sucessive enter operation */
+	// 	-webkit-transition-delay: 200ms
+	// 	transition-delay: 200ms
+
+	// 	// in case the stagger doesn't work then these two values 
+	// 	// must be set to 0 to avoid an accidental CSS inheritance
+	// 	-webkit-transition-duration: 0
+	// 	transition-duration: 0
+
+
+
+

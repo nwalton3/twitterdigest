@@ -9,23 +9,15 @@
 	  
 	ldServices.value('version', '0.1');
 
-	ldServices.factory('Lists', ['$resource', 
+	ldServices.factory('TwitterAPI', ['$resource', 
 		function listsFactory( $resource ) {
-			return $resource('/connect/auth.php', { }, {
+			return $resource('/connect/auth_user.php', { }, {
 				get: {method:'GET', params: { path: '@path', q: encodeURIComponent('@q') }, isArray:false, cache: true},
 				query: {method:'GET', params: { path: '@path', q: encodeURIComponent('@q') }, isArray:true, cache: true},
+				save: {method:'POST', params: { path: '@path', id: '@id', post: true }, isArray:false, cache: false},
 			});
 		}
 	]);
-
-	// ldServices.factory('User', ['$resource', 
-	// 	function tweetsFactory( $resource ) {
-	// 		return $resource('/connect/user.php', { }, {
-	// 			get: {method:'GET', params: { path: '@path', q: encodeURIComponent('@q') }, isArray:false, cache: true},
-	// 			query: {method:'GET', params: { path: '@path', q: encodeURIComponent('@q') }, isArray:true, cache: true},
-	// 		});
-	// 	}
-	// ]);
 
 	ldServices.factory('_', [
 		function underscoreFactory() {
@@ -36,6 +28,12 @@
 	ldServices.factory('typogr', [
 		function typogrifyFactory() {
 			return window.typogr;
+		}
+	]);
+
+	ldServices.factory('TweenMax', [
+		function tweenMaxFactory() {
+			return window.TweenMax;
 		}
 	]);
 

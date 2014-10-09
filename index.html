@@ -11,6 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
   <link rel="stylesheet" href="css/listDigest.css"/>
+  <link rel="icon" 
+      type="image/ico" 
+      href="/favicon.ico">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
   <script type="text/javascript">
 	  (function(d) {
@@ -25,18 +28,73 @@
 
 	<body>
 		<div class="view-container">
-			<div ng-view class="view-frame"></div>
+
+			<header class="page-header" data-ng-controller="HeaderCtrl">
+
+				<form role="form" class="form-inline search" ng-submit="findUser()" method="GET">
+					<div class="form-group form-group-lg">
+						<label for="twitterHandle">@</label>
+						<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
+						<input id="findUser" type="submit" value="Search" class="btn btn-primary" />
+					</div>
+				</form>
+
+
+				<div class="logged-in-user btn-group">
+					<a href="/#/my.settings.screen_name" class="btn btn-danger" data-ng-show="my.settings.screen_name">
+						@{{my.settings.screen_name}}
+					</a>
+
+					<div class="btn-group">
+						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+							Following
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right" role="menu">
+							<li data-ng-repeat="user in my.friends.users | orderBy:userSort">
+								<a data-ng-href="/#/{{user.screen_name}}">
+									<span class="name">{{user.name}}</span>
+									<span class="screen_name">@{{user.screen_name}}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="btn-group">
+						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+							Lists
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right" role="menu">
+							<li data-ng-repeat="list in my.lists | orderBy:listSort">
+								<a data-ng-href="/#/{{list.user.screen_name}}/{{list.name}}">
+									<span class="name">{{list.name}}</span>
+									<span class="screen_name">(@{{list.user.screen_name}})</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+			</header>
+
+			<div data-ng-view class="view-frame"></div>
 		</div>
 
 		<script src="bower_components/underscore/underscore-min.js"></script>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/angular/angular.min.js"></script>
 		<script src="bower_components/angular-route/angular-route.min.js"></script>
 		<script src="bower_components/angular-resource/angular-resource.min.js"></script>
 		<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 		<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+		<script src="bower_components/gsap/src/minified/TweenMax.min.js"></script>
+		<script src="bower_components/bootstrap/js/button.js"></script>
+		<script src="bower_components/bootstrap/js/dropdown.js"></script>
 		<script src="node_modules/typogr/typogr.min.js"></script>
 		<script src="app/js/app.js"></script>
 		<script src="app/js/directives.js"></script>
+		<script src="app/js/animations.js"></script>
 		<script src="app/js/filters.js"></script>
 		<script src="app/js/services.js"></script>
 		<script src="app/js/controllers.js"></script>

@@ -17,6 +17,7 @@
     "font-awesome": "~4.2.0",
     "underscore": "~1.7.0",
     "bootstrap": "~3.2.0",
-    "normalize.scss": "~3.0.1"
+    "normalize.scss": "~3.0.1",
+    "gsap": "~1.13.2"
   }
 }

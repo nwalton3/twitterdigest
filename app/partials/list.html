@@ -1,43 +1,29 @@
-<header>
-
-	<form role="form" class="form-inline" ng-submit="findUser()" method="GET">
-		<div class="form-group form-group-lg">
-			<label for="twitterHandle">@</label>
-			<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
-			<input id="findUser" type="submit" value="Search" class="btn btn-primary" />
-		</div>
-	</form>
-
-</header>
-
 
 
 <section class="digest">
 
-	<h1 data-ng-show="isList"><a data-ng-href="/#/{{user.screen_name}}">@{{user.screen_name}}'s</a> <span class="source">{{list.name}}</span> list</h1>
+	<header class="list-header">
+		<h1 data-ng-show="isList"><a data-ng-href="/#/{{user.screen_name}}">@{{user.screen_name}}'s</a> <span class="source">{{list.name}}</span> list</h1>
 
-	<h1 data-ng-show="isUser">
-		<span class="avatar">
-			<a data-ng-href="https://twitter.com/{{user.screen_name}}"><img data-ng-src="{{user.profile_image_url_https}}" /></a>
-		</span>
-		<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
-		<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
-	</h1>
+		<h1 data-ng-show="isUser">
+			<span class="avatar">
+				<a data-ng-href="https://twitter.com/{{user.screen_name}}"><img data-ng-src="{{user.profile_image_url_https}}" /></a>
+			</span>
+			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
+			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
+			<div class="follow_user">
+				<a href="" class="btn btn-primary" data-ng-show="!user.following" data-ng-click="follow(user)">Follow</a>
+				<span data-ng-show="user.following">Following</span>
+			</div>
+		</h1>
+	</header>
 
-	<h2 ng-show="lists.length">Lists</h2>
-	<ul class="lists" ng-show="lists.length">
-		<li class="list" data-ng-repeat="list in lists" >
-			<a data-ng-href="/#/{{list.user.screen_name}}/{{list.slug}}">
-				<span class="screenName">@{{list.user.screen_name}}</span>
-				<span class="slash">/</span>
-				<span class="listName">{{list.name}}</span>
-			</a>
-		</li>
-	</ul>
+	<div>
+		<h2 ng-show="tweets.length">
+			Top <span data-ng-model="tweetsToShow" contenteditable>10</span> of 200 latest tweets
+		</h2>
+	</div>
 
-	<h2 ng-show="tweets.length">
-		Top <span data-ng-model="tweetsToShow" contenteditable>10</span> of 200 latest tweets
-	</h2>
 	<ul class="tweets" ng-show="tweets.length">
 		<li class="tweet" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
 			<div class="tweet_body">
@@ -55,10 +41,12 @@
 					<span class="day">{{tweet.created_at | parseDay}}</span>
 					<span class="date">{{tweet.created_at | parseDate | date:"h:mm a"}}</span>
 				</div>
-				<a class="info favorites">{{tweet.favorite_count}}</a>
-				<a class="info retweets">{{tweet.retweet_count}}</a>
-				<a class="info reply">Reply</a>
+				<a class="info favorites favorite-{{tweet.favorited}}" data-ng-click="favorite(tweet)">{{ tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count | number}}</a>
+				<a class="info retweets retweeted-{{tweet.retweeted}}" data-ng-click="retweet(tweet)">{{tweet.retweet_count | number}}</a>
+				<a class="info reply" data-ng-click="reply(tweet)">Reply</a>
 			</aside>
 		</li>
 	</ul>
+
+	<a href="" ng-click="showMoreTweets()" ng-show="tweets.length" class="show-more">Show more tweets</a>
 </section>

@@ -6,6 +6,7 @@
 
 	var ldFilters = angular.module('listDigest.filters', []);
 
+
 	ldFilters.filter('parseDate', [ 
 		function() {
 			return function(date) {
@@ -13,6 +14,7 @@
 			};
 		}
 	]);
+
 
 	ldFilters.filter('parseDay', [ '$filter',
 		function( $filter ) {
@@ -36,11 +38,13 @@
 		}
 	]);
 
+
 	ldFilters.filter('typogr', ['typogr',
 		function( typogr ) {
 			return typogr.typogrify( text );
 		}
 	]);
+
 
 	ldFilters.filter('parseTweet', ['$filter', 'typogr',
 		function( $filter, typogr ) {
@@ -70,10 +74,15 @@
 
 							if ( items == urls ) {
 								repl = '<a class="external_url" target="_blank" href="' + item.url + '">' + item.display_url + '</a>';
+							
 							} else if ( items == users ) {
 								repl = '<a class="user" href="/#/' + item.screen_name + '">@' + item.screen_name + "</a>";
+								string = new RegExp( string + '\\b' );
+
 							} else if ( items == hashtags ) {
 								repl = '<a class="hashtag" target="_blank" href="https://twitter.com/hashtag/' + item.text + '?src=hash">#' + item.text + '</a>';
+								string = new RegExp( string + '\\b' );
+
 							} else if ( items == media && item.type == 'photo' ) {
 								repl = '';
 							}
@@ -95,6 +104,7 @@
 				replaceEntities( hashtags );
 				replaceEntities( media );
 				replaceString(/^“/, '<span class="openingquote">“</span>');
+				replaceString(/\s(https?\:\/\/\S*)/, ' <a target="blank" href="$1">$1</a>');
 
 
 				return typogr.typogrify(newt);
