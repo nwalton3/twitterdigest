@@ -16,6 +16,7 @@ h1 .source { color: #eebb33; }
 h1 .source:hover, h1 .source:focus { color: #f1c85b; }
 h1 .screen_name { color: #ee4444; }
 h1 .screen_name:hover, h1 .screen_name:focus { color: #f16969; }
+h1 .avatar img { border: 1px solid black; }
 @media (min-width: 54em) { h1 .avatar { margin-left: -48px; } }
 
 h2 { margin-bottom: 0.25em; color: #666666; font-size: 2em; max-width: 25em; }
@@ -29,7 +30,9 @@ h2 { margin-bottom: 0.25em; color: #666666; font-size: 2em; max-width: 25em; }
 
 .list-header { background: #222222; border-bottom: 1px solid #333333; padding: 1.5em 0 1.25em; margin: 0 -6% 1em; box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5); }
 
-.follow_user { position: absolute; font-size: 1rem; top: 0; right: 0; color: #666666; }
+.follow_user { font-size: 1rem; color: #666666; }
+.follow_user .following { font-size: 1.75em; }
+.follow_user .following:before { content: "\f00c"; font-size: 0.85em; font-family: "Fontawesome"; display: inline-block; margin-right: 0.25em; font-style: normal; }
 
 /* Tweets */
 .tweets, .lists { list-style: none; margin: 0 auto 3em; padding: 0; max-width: 50em; }
@@ -91,11 +94,11 @@ h2 { margin-bottom: 0.25em; color: #666666; font-size: 2em; max-width: 25em; }
 .dropdown-menu { max-height: 50vw; overflow: scroll; }
 
 /* Animations */
-.animate { -webkit-transition: all 200ms ease; -o-transition: all 200ms ease; transition: all 200ms ease; }
-.animate.ng-hide-add, .animate.ng-hide-remove { /* ensure visibility during the transition */ }
-.animate.ng-enter, .animate.ng-move, .animate.ng-add, .animate.ng-hide-add { opacity: 0; max-height: 0; }
-.animate.ng-move.ng-move-active, .animate.ng-enter.ng-enter-active, .animate.ng-add.ng-add-active, .animate.ng-hide-add.ng-hide-add-active { opacity: 1; max-height: 30em; }
-.animate.ng-leave, .animate.ng-remove, .animate.ng-hide-remove { opacity: 1; max-height: 30em; }
-.animate.ng-leave.ng-leave-active, .animate.ng-remove.ng-remove-active, .animate.ng-hide-remove.ng-hide-remove-active { opacity: 0; max-height: 0; }
+[ng-cloak] { opacity: 0; }
+
+.animate-show { -webkit-transition: all 200ms ease; -o-transition: all 200ms ease; transition: all 200ms ease; opacity: 1; }
+.animate-show.ng-hide { opacity: 0; }
+
+.animate-repeat { right: 20px; }
 
 /*# sourceMappingURL=listDigest.css.map */

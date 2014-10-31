@@ -105,6 +105,7 @@
 				replaceEntities( media );
 				replaceString(/^“/, '<span class="openingquote">“</span>');
 				replaceString(/\s(https?\:\/\/\S*)/, ' <a target="blank" href="$1">$1</a>');
+				replaceString(/\r\n|\r|\n/g, '<br />');
 
 
 				return typogr.typogrify(newt);

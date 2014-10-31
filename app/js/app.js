@@ -10,7 +10,8 @@
 		'listDigest.filters',
 		'listDigest.services',
 		'listDigest.directives',
-		'listDigest.controllers'
+		'listDigest.controllers',
+		'listDigest.animations'
 	]);
 
 	listDigest.config(['$routeProvider', 

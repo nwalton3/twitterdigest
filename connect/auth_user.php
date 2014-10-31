@@ -16,6 +16,13 @@ require_once('twitteroauth/twitteroauth/twitteroauth.php');
 require_once('twitteroauth/config.php');
 
 
+// If the redirect header is set to false, stay here and execute. Otherwise, go back to the home page. */
+$redirect = isset( $_GET['redirect'] )  ?  $_GET['redirect']  :  false;
+
+if( $redirect ) {
+	header('location: /');
+}
+
 
 // Get params from request 
 $path = isset( $_GET['path'] )  ?  $_GET['path']  :  false;
@@ -23,18 +30,12 @@ $q =    isset( $_GET['q'] )     ?  $_GET['q']     :  false;
 $id =   isset( $_GET['id'] )    ?  $_GET['id']    :  false;
 $post = isset( $_GET['post'] )  ?  $_GET['post']  :  false;
 
+
 if ( !$path ) {
 	$path = isset( $_POST['path'] )  ?  $_POST['path']  :  false;
 	$q =    isset( $_POST['q'] )     ?  $_POST['q']     :  false;
 	$id =   isset( $_POST['id'] )    ?  $_POST['id']    :  false;
 	$post = isset( $_POST['post'] )  ?  $_POST['post']  :  false;
-}
-
-
-
-// Redirect to home page if there's no request
-if ( !$path && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' ) {
-	header( 'Location: /' );
 }
 
 
@@ -46,13 +47,19 @@ if ( $path !== false )
 	$result = request( $path, $q, $id, $post );
 	print $result;
 }
+else if ( $_GET['signout'] ) {
+	/* Make sure session stuff is cleared out. */
+	unset($_SESSION['access_token']);
+	unset($_SESSION['oauth_token']);
+	unset($_SESSION['oauth_token_secret']);
+	unset($_SESSION['oauth_status']);
+
+	header('location: /');
+}
 else 
 {
 	print '{"result":"error"}';
-	return;
 }
-
-
 
 
 
@@ -125,13 +132,14 @@ function clearSessionVars( $path, $q, $id, $post ) {
 	unset($_SESSION['access_token']);
 	unset($_SESSION['oauth_token']);
 	unset($_SESSION['oauth_token_secret']);
+	unset($_SESSION['oauth_status']);
 
 	/* Build TwitterOAuth object with client credentials. */
 	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
 	$connection->useragent = 'Twitter List Digest v0.1';
 	 
 	/* Get temporary credentials. */
-	$request_token = $connection->getRequestToken(OAUTH_CALLBACK . '?path=' . $path . '&q=' . $q . '&post=' . $post );
+	$request_token = $connection->getRequestToken(OAUTH_CALLBACK . '?path=' . $path . '&q=' . $q . '&post=' . $post . '&redirect=true');
 
 	/* Save temporary credentials to session. */
 	$_SESSION['oauth_token'] = $token = $request_token['oauth_token'];
@@ -162,14 +170,20 @@ function clearSessionVars( $path, $q, $id, $post ) {
  */
 function connect( $path, $q, $id, $post ) {
 
+	/* If we don't have the request from Twitter, get it. */
+	if( !isset($_REQUEST['oauth_verifier']) ) {
+		clearSessionVars( $path, $q, $id, $post );
+	}
+
+
 	/* If the oauth_token is old run the connection again. */
 	if ( isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token'] ) {
 	  $_SESSION['oauth_status'] = 'oldtoken';
 
-	  echo "oldtoken";
 	  clearSessionVars( $path, $q, $id, $post );
 	  return;
 	}
+
 
 	/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
 	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -201,9 +215,6 @@ function connect( $path, $q, $id, $post ) {
 	}
 
 }
-
-
-
 
 
 

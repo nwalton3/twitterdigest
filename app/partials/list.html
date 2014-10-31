@@ -11,10 +11,10 @@
 			</span>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
-			<div class="follow_user">
-				<a href="" class="btn btn-primary" data-ng-show="!user.following" data-ng-click="follow(user)">Follow</a>
-				<span data-ng-show="user.following">Following</span>
-			</div>
+			<span class="follow_user">
+				<a href="" class="follow btn btn-primary" data-ng-show="!user.following" data-ng-click="follow(user)">Follow</a>
+				<span class="following" data-ng-show="user.following">Following</span>
+			</span>
 		</h1>
 	</header>
 
@@ -25,13 +25,13 @@
 	</div>
 
 	<ul class="tweets" ng-show="tweets.length">
-		<li class="tweet" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
+		<li class="tweet animate-repeat" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
 			<div class="tweet_body">
 				<a class="user screen_name" data-followers="{{tweet.user.followers_count | number}}" data-ng-href="/#/{{tweet.user.screen_name}}" data-ng-show="isList">@{{tweet.user.screen_name}}</a>
 				<span class="tweet_text" data-ng-bind-html="tweet | parseTweet"></span>
-				<div class="tweet_media collapsed" data-ng-show="tweet.entities.media" data-ng-repeat="media in tweet.entities.media">
+				<div class="tweet_media collapsed" data-ng-show="tweet.entities.media" data-ng-repeat="media in tweet.entities.media" data-ng-attr-style="max-height:{{ media.sizes.medium.h + 50 }}px">
 					<a href="" class="show_media" data-ng-click="showMedia($event)">Show {{media.type}}</a>
-					<div class="imgWrapper" data-ng-attr-style="max-width:{{media.sizes.medium.w}}px; padding-bottom:{{ (media.sizes.medium.h / media.sizes.medium.w) * 100}}%;">
+					<div class="imgWrapper" data-ng-attr-style="max-width:{{media.sizes.medium.w}}px; padding-bottom:{{ (media.sizes.medium.h / media.sizes.medium.w) * 100}}%">
 						<img class="tweet_image" data-ng-attr-data-src="{{media.media_url_https}}" />
 					</div>
 				</div>
@@ -48,5 +48,5 @@
 		</li>
 	</ul>
 
-	<a href="" ng-click="showMoreTweets()" ng-show="tweets.length" class="show-more">Show more tweets</a>
+	<a href="" ng-click="showMoreTweets()" ng-show="tweets.length > tweetsToShow" class="show-more">Show more tweets</a>
 </section>

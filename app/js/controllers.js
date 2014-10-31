@@ -12,9 +12,11 @@
 
 
 
-	// Header
-	ldControllers.controller('HeaderCtrl', [ '$scope', 'TwitterAPI',
-		function( $scope, TwitterAPI ) {
+
+
+	// Header/Index
+	ldControllers.controller('HeaderCtrl', [ '$scope', 'TwitterAPI', '$location',
+		function( $scope, TwitterAPI, $location ) {
 
 			// Get info about me
 			if( !$scope.my ) {
@@ -23,7 +25,6 @@
 						$scope.my.friends = TwitterAPI.get( { path: 'friends/list', q: 'count=200&skip_status=true&include_user_entities=false' } );
 						$scope.my.lists = TwitterAPI.query( { path: 'lists/list', q: 'reverse=true' } );
 						$scope.my.settings = TwitterAPI.get( { path: 'account/settings' } );
-						console.log( $scope.my );
 					}, function(e) { // Error
 						console.log("error:");
 						console.log(e);
@@ -37,8 +38,25 @@
 				$location.path('/' + $scope.screen_name );
 			};
 
+
+
+			// Sort Users
+			$scope.userSort = function( user ) {
+				return -1 * user.followers_count;
+			}
+
+
+
+			// Sort Lists
+			$scope.listSort = function( list ) {
+				return list.name;
+			}
+
 		}
 	]);
+
+
+
 
 
 
@@ -67,6 +85,7 @@
 					function(){ // success
 						$scope.user = $scope.list.user;
 						$scope.isList = true;
+						$scope.tweetsToShow = 25;
 					}
 				);
 			} 
@@ -78,6 +97,7 @@
 				$scope.user = TwitterAPI.get( { path: 'users/show', q: 'screen_name=' + $scope.params.username },
 					function() { // success
 						$scope.isUser = true;
+						$scope.tweetsToShow = 10;
 					}
 				);
 			} 
@@ -222,19 +242,6 @@
 				return -1 * index;
 			};
 
-
-
-			// Sort Users
-			$scope.userSort = function( user ) {
-				return -1 * user.followers_count;
-			}
-
-
-
-			// Sort Lists
-			$scope.listSort = function( list ) {
-				return list.name;
-			}
 
 
 

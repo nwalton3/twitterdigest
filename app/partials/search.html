@@ -1,61 +1,14 @@
-<header class="page-header">
-
-	<div data-ng-show="my.settings" class="logged-in-user btn-group">
-		<a href="/#/my.settings.screen_name" class="btn btn-danger" data-ng-show="my.settings.screen_name">
-			@{{my.settings.screen_name}}
-		</a>
-
-		<div class="btn-group">
-			<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-				Following
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li data-ng-repeat="user in my.friends.users">
-					<a data-ng-href="/#/{{user.screen_name}}">
-						<span class="name">{{user.name}}</span>
-						<span class="screen_name">@{{user.screen_name}}</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div class="btn-group">
-			<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-				Lists
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li data-ng-repeat="list in my.lists">
-					<a data-ng-href="/#/{{list.user.screen_name}}/{{list.name}}">
-						<span class="name">{{list.name}}</span>
-						<span class="screen_name">(@{{list.user.screen_name}})</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-
-	</div>
-
-	<div data-ng-hide="my.settings" >
-		<a href="/connect/auth_user.php?path=account%2Fverify_credentials&q=skip_status%3Dtrue%26include_entities%3Dfalse" >
-			<img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" title="Sign in with Twitter">
-		</a>
-	</div>
 
 
-</header>
+<div>
+	<a href="/connect/auth_user.php?path=account%2Fverify_credentials&q=skip_status%3Dtrue%26include_entities%3Dfalse&redirect=false" >
+		<img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" title="Sign in with Twitter">
+	</a>
+</div>
 
-
-
-<form role="form" class="form-inline" ng-submit="findUser()" method="GET">
-	<div class="form-group form-group-lg">
-		<span class="help-block">Enter a twitter handle to retrieve all of that user's lists</span>
-		<label for="twitterHandle">Twitter Handle: @</label>
-		<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
-		<input id="findLists" type="submit" value="Find lists" class="btn btn-primary" />
-	</div>
-</form>
+<div>
+	<a href="/connect/auth_user.php?signout=true&redirect=false">Sign out</a>
+</div>
 
 <ul class="lists" ng-repeat="list in lists" ng-show="lists">
 	<li>
