@@ -3,7 +3,7 @@
  */
 
 
-@import "bootstrap/mixins/vendor-prefixes"
+@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/vendor-prefixes"
 // @import "../bower_components/normalize.scss/normalize"
 
 
@@ -63,11 +63,14 @@ $transition-speed: 200ms
 	+box-sizing(border-box)
 
 body
-	margin: 2em 5% 10em
+	margin: 2em 5% 0
 	background-color: mix(#222, #333)
 	font-family: "fira-sans", sans-serif
 	font-weight: 100
 	overflow-x: hidden
+	color: #666
+
+
 
 
 h1, h2
@@ -76,9 +79,10 @@ h1, h2
 	font-style: italic
 	margin: 0 auto
 
-h1
+section h1
 	font-size: 2.5em
-	max-width: 20.2em
+	margin: 0 5%
+	max-width: 90%
 	a
 		@extend %transition-all
 		&:hover, &:focus
@@ -92,27 +96,58 @@ h1
 		&:hover, &:focus
 			color: mix($red, white, 80%)
 	.avatar
-		@extend %transition-all
 		img
 			border: 1px solid #000
-	@media (min-width: 54em)
+			border-radius: 0.2em
+	@media (min-width: 53.125em)
+		max-width: 20.2em
+		margin: 0 auto
+		padding-left: 1em
 		.avatar
-			margin-left: -48px
+			margin-left: -58px
+
 
 h2
 	margin-bottom: 0.25em
 	color: #666
 	font-size: 2em
 	max-width: 25em
+	&.numbers
+		padding-left: 1.25em
 
+.showImages, .next.top
+	position: absolute
+
+.next.top
+	right: 2em
+
+
+$title-size: 1.35
 
 .page-header
 	margin: -2em -6% 0
 	background: #000
 	border-bottom: 1px solid #222
-	padding: 0.75em
 	z-index: 1
 	box-shadow: 0px 0px 15px rgba(0,0,0,0.65)
+	h1
+		font-family: "ff-basic-gothic-sc-web-pro", sans-serif
+		font-size: $title-size * 1em
+		padding: 0 5%
+		letter-spacing: 0.1em
+		text-transform: lowercase
+		font-style: normal
+		a
+			@extend %transition-all
+			color: $blue1
+			display: block
+			padding: 0.35em 0.2em
+			max-width: 50.5em / $title-size
+			margin: 0 auto
+			&:hover, &:focus
+				color: $blue2
+				text-decoration: none
+
 	.search
 		margin-left: 5%
 	label
@@ -155,17 +190,18 @@ h2
 
 
 
+/* Home page */
 
-
+@import "home"
 
 
 
 
 /* Tweets */
 
-.tweets, .lists
+.tweets, .lists, .content
 	list-style: none
-	margin: 0 auto 3em
+	margin: 0 auto 1em
 	padding: 0
 	max-width: 50em
 
@@ -367,9 +403,9 @@ h2
 .show-more
 	@extend %transition-all
 	font-size: 1.5em
-	color: #999
+	color: mix($red, $yellow, 40%)
 	display: block
-	margin: 0 auto
+	margin: 0 auto 1.5em
 	padding: 0.75em 1.5em 0.8em
 	max-width: 33.3333em
 	background-color: mix(#222, #333, 70%)
@@ -377,11 +413,16 @@ h2
 	border-bottom: 1px solid #333
 	border-radius: 0.5em
 	&:hover, &:focus
-		color: #ccc
+		color: mix($red, $yellow, 20%)
 		background-color: #222
 		border-top-color: #111
 		border-bottom-color: mix(#333, #444, 75%)
 		text-decoration: none
+		.screen_name
+			color: mix($red, red)
+	.screen_name
+		@extend %transition-all
+		color: $red
 
 
 
@@ -396,6 +437,70 @@ h2
 .dropdown-menu
 	max-height: 50vw
 	overflow: scroll
+
+
+
+
+
+
+
+
+/* Footer */
+footer
+	background-color: mix(#222, #111)
+	border-top: 1px solid #000
+	box-shadow: inset 0 5px 5px -5px #000
+	margin: 3em -6% 0
+	padding: 2em 0 8em
+	a
+		color: $blue1
+		.screen_name, &.owner
+			color: mix($blue1, #000, 70%)
+		&:hover
+			color: $blue2
+			text-decoration: none
+			.screen_name, &.owner
+				color: mix($blue2, #000, 70%)
+	h2, .content
+		max-width: 90%
+	.content
+		column-count: 4
+		column-width: 18em
+		column-gap: 1%
+	
+	li
+		padding: 0.2em 0 0.2em 2em
+		margin-left: -2em
+		-webkit-column-break-inside: avoid
+		page-break-inside: avoid
+		break-inside: avoid
+		&.current-true
+			background-color: #000
+			border-radius: 3px
+			a
+				color: $blue2
+				.screen_name, &.owner
+					color: mix($blue2, #000, 80%)
+
+	.group
+		display: table
+		padding: 0
+		.item
+			display: table-row
+		.info, .heading
+			display: table-cell
+			padding: 0.15em 0.5em
+		.header
+			display: table-header-group
+		.heading
+			font-weight: bold
+			border-bottom: 1px solid #666
+
+		a
+			cursor: pointer
+			&:hover, &:focus
+				color: lighten($link-color, 15%)
+				text-decoration: none
 
 
 

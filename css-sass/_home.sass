@@ -1,0 +1,25 @@
+/* _home.sass */
+
+@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables"
+
+.home
+	.group
+		display: table
+		padding: 0
+		.item
+			display: table-row
+		.info, .heading
+			display: table-cell
+			padding: 0.15em 0.5em
+		.header
+			display: table-header-group
+		.heading
+			font-weight: bold
+			border-bottom: 1px solid #666
+
+		a
+			cursor: pointer
+			&:hover, &:focus
+				color: lighten($link-color, 15%)
+				text-decoration: none
+

@@ -15,8 +15,15 @@
 
 
 	// Header/Index
-	ldControllers.controller('HeaderCtrl', [ '$scope', 'TwitterAPI', '$location',
-		function( $scope, TwitterAPI, $location ) {
+	ldControllers.controller('HeaderCtrl', [ '$scope', 'TwitterAPI', '$location', '_', 'sharedProperties',
+		function( $scope, TwitterAPI, $location, _, sharedProperties ) {
+
+			$scope.listSortable = "name";
+			$scope.listsReverse = false;
+			$scope.userSortable = "followers_count";
+			$scope.usersReverse = true;
+			$scope.currentFriend = sharedProperties.getCurrentFriend();
+			$scope.friendList   = sharedProperties.getFriendList();
 
 			// Get info about me
 			if( !$scope.my ) {
@@ -32,7 +39,6 @@
 				);
 			}
 
-
 			// Perform a search
 			$scope.findUser = function() {
 				$location.path('/' + $scope.screen_name );
@@ -41,16 +47,55 @@
 
 
 			// Sort Users
-			$scope.userSort = function( user ) {
-				return -1 * user.followers_count;
+			$scope.changeUserSorting = function( value ) {
+				if( $scope.userSortable == value ) {
+					$scope.usersReverse = !$scope.usersReverse;
+					return;
+				}
+
+				$scope.userSortable = value;
+
+				if ( $scope.userSortable == "followers_count" ) {
+					$scope.usersReverse = true;
+				} else {
+					$scope.usersReverse = false;
+				}
 			}
 
 
 
 			// Sort Lists
-			$scope.listSort = function( list ) {
-				return list.name;
+			$scope.changeListSorting = function( value ) {
+				if( $scope.listSortable == value ) {
+					$scope.listsReverse = !$scope.listsReverse;
+					return;
+				}
+
+				$scope.listSortable = value;
+
+				if ( $scope.listSortable == "member_count" || $scope.listSortable == "subscriber_count" ) {
+					$scope.listsReverse = true;
+				} else {
+					$scope.listsReverse = false;
+				}
 			}
+
+
+
+
+			// Unfollow a user
+			$scope.unfollow = function( user ) {
+				var user_id = user.id_str;
+				var unfollowed = TwitterAPI.save( { path: 'friendships/destroy', id: user_id },
+					function() { // success
+						if ( unfollowed.errors ) {
+							console.log( 'ERROR: ' + unfollowed.errors[0].message );
+							return;
+						}
+						user.following = false;
+					}
+				);
+			};
 
 		}
 	]);
@@ -61,8 +106,8 @@
 
 
 	// List page
-	ldControllers.controller('ListCtrl', ['$scope', '$routeParams', '$location', 'TwitterAPI', '_', 'TweenMax',
-		function( $scope, $routeParams, $location, TwitterAPI, _, TweenMax ) {
+	ldControllers.controller('ListCtrl', ['$scope', '$routeParams', '$location', 'TwitterAPI', '_', 'TweenMax', 'sharedProperties',
+		function( $scope, $routeParams, $location, TwitterAPI, _, TweenMax, sharedProperties ) {
 
 			// Define variables
 			$scope.screen_name = '';
@@ -71,20 +116,24 @@
 
 			$scope.params = $routeParams;
 			$scope.numTweets = 200;
-			$scope.tweetsToShow = 20;
+			$scope.tweetsToShow = 10;
 			$scope.isList = false;
 			$scope.isUser = false;
-
+			$scope.nextUser = null;
+			$scope.friendList = null;
+			$scope.currentFriend = sharedProperties.getCurrentFriend();
+			$scope.friendList = sharedProperties.getFriendList();
+			$scope.counter = {};
 
 			// This is a list
 			if ( $scope.params.listname ) {
 				$scope.path = 'lists/statuses';
 				$scope.query = 'count=' + $scope.numTweets + '&slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username;
+				$scope.isList = true;
 
 				$scope.list = TwitterAPI.get( { path: 'lists/show', q: 'slug=' + $scope.params.listname + '&owner_screen_name=' + $scope.params.username }, 
 					function(){ // success
 						$scope.user = $scope.list.user;
-						$scope.isList = true;
 						$scope.tweetsToShow = 25;
 					}
 				);
@@ -93,11 +142,14 @@
 			else if ( $scope.params.username ) {
 				$scope.path = 'statuses/user_timeline';
 				$scope.query = 'count=' + $scope.numTweets + '&screen_name=' + $scope.params.username;
+				$scope.isUser = true;
+				$scope.user = _.find( $scope.friendList.data, function(friend){ return $scope.params.username == friend.screen_name } );
 
 				$scope.user = TwitterAPI.get( { path: 'users/show', q: 'screen_name=' + $scope.params.username },
 					function() { // success
-						$scope.isUser = true;
 						$scope.tweetsToShow = 10;
+						$scope.currentFriend.data = $scope.user;
+						$scope.nextUser = $scope.getNextUser();
 					}
 				);
 			} 
@@ -150,16 +202,27 @@
 			// Favorite a tweet
 			$scope.favorite = function( tweet ) {
 				var fav = tweet.favorited;
+				var path = 'favorites/create';
+				var unfav = false;
 
-				var favorite = TwitterAPI.save( { path: 'favorites/create', id: tweet.id_str },
+				if (fav) {
+					path = 'favorites/destroy';
+					unfav = true;
+				}
+
+				var favorite = TwitterAPI.save( { path: path, id: tweet.id_str },
 					function() { // success
 
 						if ( favorite.errors ) {
 							console.log( 'ERROR: ' + favorite.errors[0].message );
 							return;
 						}
-						tweet.favorited = true;
-						tweet.favorite_count += 1;
+						tweet.favorited = !unfav;
+						if (!unfav) {
+							tweet.favorite_count += 1;
+						} else {
+							tweet.favorite_count -= 1;
+						}
 					}
 				);
 			};
@@ -179,6 +242,7 @@
 						}
 						tweet.retweeted = true;
 						tweet.retweet_count += 1;
+						tweet.orderIndex = $scope.indexTweet(tweet);
 					}
 				);
 			};
@@ -192,18 +256,11 @@
 
 
 
-			// Perform a search
-			$scope.findUser = function() {
-				$location.path('/' + $scope.screen_name );
-			};
-
-
-
 			// Show more tweets
 			$scope.showMoreTweets = function() {
 				if ( $scope.tweetsToShow + 10 <= $scope.numTweets ) {
 					$scope.tweetsToShow += 10;
-				} 
+				}
 			};
 
 
@@ -211,6 +268,64 @@
 			// Sort tweets
 			$scope.tweetSort = function( tweet ) {
 
+				if ( !tweet.orderIndex ) {
+					tweet.orderIndex = $scope.indexTweet(tweet);
+				}
+
+				return -1 * tweet.orderIndex;
+			};
+
+
+
+			// Get the next user in the ordered list of friends
+			$scope.getNextUser = function() {
+
+				var screen_name = $scope.screen_name;
+
+				if( $scope.friendList.data !== null && $scope.friendList.data !== undefined ) {
+
+					var list = $scope.friendList.data,
+						currentFriend = _.find( list, function(friend) { return friend.screen_name == $scope.currentFriend.data.screen_name } ),
+						currentIndex  = _.indexOf( list, currentFriend ),
+						nextIndex  = currentIndex + 1;
+
+						$scope.nextUser = list[nextIndex];
+				} else {
+
+					if ($scope.counter.nextUser) {
+						$scope.counter.nextUser += 1;
+					} else {
+						$scope.counter.nextUser = 1;
+					}
+					
+					if ($scope.counter.nextUser < 50 ) {
+						setTimeout( $scope.getNextUser, 250 );
+					} else {
+						console.log('Could not get next user.');
+					}
+					
+					return;
+				}
+				
+				return $scope.nextUser;
+			};
+
+
+
+			// Get the username of the next user in the ordered list of friends
+			$scope.getNextUserName = function() {
+
+				var nextUser = $scope.getNextUser();
+				return nextUser.screen_name;
+
+			};
+
+
+
+
+			// Index the tweet by an algorithm
+			$scope.indexTweet = function( tweet ) {
+				
 				var retweet_weight, favorite_weight, follower_weight, link_weight, mention_weight, listed_weight,
 					retweet_index, favorite_count, favorite_index, follower_index, link_index, mention_index, listed_index,
 					rt_value, fav_value, fol_value, link_value, mention_value, lst_value, index;
@@ -238,10 +353,8 @@
 				// lst_value = listed_index * listed_weight;
 
 				index = rt_value + fav_value + fol_value + link_value + mention_value;
-
-				return -1 * index;
-			};
-
+				return index;
+			}
 
 
 

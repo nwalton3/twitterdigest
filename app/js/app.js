@@ -16,7 +16,7 @@
 
 	listDigest.config(['$routeProvider', 
 		function($routeProvider) {
-			$routeProvider.when('/', {templateUrl: 'app/partials/search.html', controller: 'ListCtrl'});
+			$routeProvider.when('/', {templateUrl: 'app/partials/home.html', controller: 'ListCtrl'});
 			$routeProvider.when('/:username', {templateUrl: 'app/partials/list.html', controller: 'ListCtrl'});
 			$routeProvider.when('/:username/:listname', {templateUrl: 'app/partials/list.html', controller: 'ListCtrl'});
 			$routeProvider.otherwise({redirectTo: '/'});

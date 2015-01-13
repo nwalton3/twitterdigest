@@ -1,5 +1,6 @@
 
 
+
 <section class="digest">
 
 	<header class="list-header">
@@ -11,19 +12,28 @@
 			</span>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
-			<span class="follow_user">
-				<a href="" class="follow btn btn-primary" data-ng-show="!user.following" data-ng-click="follow(user)">Follow</a>
+			<span class="follow_user" data-ng-show="user">
+				<a href="" class="follow btn btn-primary" data-ng-hide="user.following || user.screen_name == my.settings.screen_name" data-ng-click="follow(user)" data-ng-cloak >Follow</a>
 				<span class="following" data-ng-show="user.following">Following</span>
 			</span>
 		</h1>
 	</header>
 
-	<div>
-		<h2 ng-show="tweets.length">
+
+
+	<div class="listControls">
+		<h2 ng-show="tweets.length" class="numbers">
 			Top <span data-ng-model="tweetsToShow" contenteditable>10</span> of 200 latest tweets
 		</h2>
+		<div class="showImages">
+			<label for="imageToggle">Images</label>
+			<input type="checkbox" data-ng-model="showImages" id="imageToggle"></input>
+		</div>
+		<a href="" class="next top" data-ng-href="/#/{{ nextUser.screen_name }}" data-ng-show="nextUser.screen_name" data-ng-cloak>Next</a>
 	</div>
 
+
+	<div class="tweets tweetLoader" ng-hide="tweets.length">Loading...</div>
 	<ul class="tweets" ng-show="tweets.length">
 		<li class="tweet animate-repeat" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
 			<div class="tweet_body">
@@ -39,7 +49,7 @@
 			<aside class="tweet_info">
 				<div class="info time">
 					<span class="day">{{tweet.created_at | parseDay}}</span>
-					<span class="date">{{tweet.created_at | parseDate | date:"h:mm a"}}</span>
+					<span class="date">{{tweet.created_at | parseDate | date:"h:mm a, yyyy"}}</span>
 				</div>
 				<a class="info favorites favorite-{{tweet.favorited}}" data-ng-click="favorite(tweet)">{{ tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count | number}}</a>
 				<a class="info retweets retweeted-{{tweet.retweeted}}" data-ng-click="retweet(tweet)">{{tweet.retweet_count | number}}</a>
@@ -48,5 +58,23 @@
 		</li>
 	</ul>
 
-	<a href="" ng-click="showMoreTweets()" ng-show="tweets.length > tweetsToShow" class="show-more">Show more tweets</a>
+
+
+	<a href="" ng-click="showMoreTweets()" ng-show="tweets.length > tweetsToShow" class="show-more">
+		Show more tweets
+	</a>
+
+	<a href="" class="next bottom show-more" data-ng-href="/#/{{ nextUser.screen_name }}" data-ng-show="tweets.length && nextUser.screen_name" data-ng-cloak>
+		<span class="nextTitle">Next:</span>
+		<span class="screen_name nextUserName">@{{ nextUser.screen_name }}</span>
+	</a>
+
 </section>
+
+
+
+
+
+
+
+

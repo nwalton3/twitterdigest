@@ -27,9 +27,13 @@
 </head>
 
 	<body>
-		<div class="view-container">
+		<div class="view-container" data-ng-controller="HeaderCtrl">
 
-			<header class="page-header" data-ng-controller="HeaderCtrl">
+			<header class="page-header">
+
+				<h1 data-ng-show="my.settings" ng-cloak>
+					<a href="/">Twitter List Digest</a>
+				</h1>
 
 				<!-- Sign in with Twitter -->
 				<div data-ng-show="!my.settings" ng-cloak>
@@ -39,8 +43,9 @@
 				</div>
 
 
+
 				<!-- Search -->
-				<form role="form" class="form-inline search animate-show" ng-submit="findUser()" method="GET" data-ng-show="my.settings">
+<!-- 				<form role="form" class="form-inline search animate-show" ng-submit="findUser()" method="GET" data-ng-show="my.settings">
 					<div class="input-group">
 						<span class="input-group-addon">@</span>
 						<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
@@ -48,12 +53,12 @@
 							<button class="btn btn-primary">Search</button>
 						</span>
 					</div>
-				</form>
+				</form> -->
 
 
 				<!-- Logged in user -->
-				<div class="logged-in-user btn-group animate-show" data-ng-show="my.settings.screen_name">
-					<a href="/#/my.settings.screen_name" class="btn btn-danger" data-ng-show="my.settings.screen_name">
+<!-- 				<div class="logged-in-user btn-group animate-show" data-ng-show="my.settings.screen_name">
+					<a data-ng-href="/#/{{my.settings.screen_name}}" class="btn btn-danger" data-ng-show="my.settings.screen_name">
 						@{{my.settings.screen_name}}
 					</a>
 
@@ -63,8 +68,8 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
-							<li data-ng-repeat="user in my.friends.users | orderBy:userSort">
-								<a data-ng-href="/#/{{user.screen_name}}">
+							<li data-ng-repeat="user in my.friends.users | orderBy:'-followers_count'">
+								<a data-ng-class="{{screen_name}}" data-ng-href="/#/{{user.screen_name}}">
 									<span class="name">{{user.name}}</span>
 									<span class="screen_name">@{{user.screen_name}}</span>
 								</a>
@@ -78,7 +83,7 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
-							<li data-ng-repeat="list in my.lists | orderBy:listSort">
+							<li data-ng-repeat="list in my.lists | orderBy:'name'">
 								<a data-ng-href="/#/{{list.user.screen_name}}/{{list.name}}">
 									<span class="name">{{list.name}}</span>
 									<span class="screen_name">(@{{list.user.screen_name}})</span>
@@ -86,13 +91,48 @@
 							</li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 
 			</header>
 
 
 			<div data-ng-view class="view-frame"></div>
+
+
+			<footer>
+
+				<h2 data-ng-show="my.lists.length > 0" data-ng-cloak>Lists</h2>
+				<div class="content" data-ng-show="my.lists.length > 0" data-ng-cloak>
+					<ul class="myLists">
+						<li class="myList" data-ng-repeat="list in my.lists | orderBy:listSortable:listsReverse">
+							<a class="info name" ng-href="/#/{{list.user.screen_name}}/{{list.slug}}" ng-bind="list.name"></a>
+							<span class="by">by</span>
+							<a class="info owner" ng-href="/#/{{list.user.screen_name}}">@{{list.user.screen_name}}</a>
+						</li>
+					</ul>
+				</div>
+
+
+
+				<h2 data-ng-show="my.friends.users" data-ng-cloak>Following</h2>
+				<div class="content" data-ng-show="my.friends.users" data-ng-cloak>
+					<ol class="myFriends">
+						<li class="myFriend current-{{currentFriend.data.screen_name == friend.screen_name}}" data-ng-repeat="friend in (friendList.data = (my.friends.users | orderBy:userSortable:usersReverse))" data-ng-show="friend.following" data-screenName="{{friend.screen_name}}" data-index="{{$index}}" data-ng-cloak>
+							<a data-ng-href="/#/{{friend.screen_name}}" class="info name">
+								<span class="name">{{friend.name}}</span>
+								<span class="screen_name">@{{friend.screen_name}}</span>
+							</a>
+						</li>
+					</ol>
+				</div>
+
+			</footer>
+
+
 		</div>
+
+
+		<script>document.write('<script src="https://' + (location.host || 'localhost').split(':')[0] + ':9000/livereload.js"></' + 'script>')</script>
 
 		<script src="bower_components/underscore/underscore-min.js"></script>
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>

@@ -1,0 +1,52 @@
+
+<section class="home">
+
+	<div class="sign-out" ng-show="my.settings.screen_name">
+		<a href="/connect/auth_user.php?signout=true&redirect=false">Sign out</a>
+	</div>
+
+	<div class="sign-in" ng-show="my && !my.settings.screen_name">
+		<a href="/connect/auth_user.php?path=account%2Fverify_credentials&q=skip_status%3Dtrue%26include_entities%3Dfalse&redirect=false" >
+			<img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" title="Sign in with Twitter">
+		</a>
+	</div>
+
+
+	<h2>Lists</h2>
+	<div class="content">
+		<ul class="group myLists">
+			<li class="header myListsHeader">
+				<a class="heading" data-ng-click="changeListSorting('name')">List</a>
+				<a class="heading" data-ng-click="changeListSorting('user.screen_name')">Owner</a>
+				<a class="heading" data-ng-click="changeListSorting('member_count')">Members</a>
+				<a class="heading" data-ng-click="changeListSorting('subscriber_count')">Subscribers</a>
+			</li> 
+			<li class="item myList" data-ng-repeat="list in my.lists | orderBy:listSortable:listsReverse">
+				<a class="info name" ng-href="/#/{{list.user.screen_name}}/{{list.slug}}" ng-bind="list.name"></a>
+				<a class="info owner" ng-href="/#/{{list.user.screen_name}}">@{{list.user.screen_name}}</a>
+				<span class="info members">{{list.member_count | number}}</span>
+				<span class="info subscribers">{{list.subscriber_count | number}}</span>
+			</li>
+		</ul>
+	</div>
+
+
+	<h2 data-ng-show="my.friends">Following</h2>
+	<div class="content" data-ng-show="my.friends">
+		<ol class="group myFriends">
+			<li class="header myFriendsHeader">
+				<a class="heading" data-ng-click="changeUserSorting('name')">Name</a>
+				<a class="heading" data-ng-click="changeUserSorting('screen_name')">Screen Name</a>
+				<a class="heading" data-ng-click="changeUserSorting('followers_count')">Followers</a>
+				<span class="heading">Actions</span>
+			</li> 
+			<li class="item myFriend current-{{user.screen_name == friend.screen_name}}" data-ng-repeat="friend in my.friends.users | orderBy:userSortable:usersReverse" data-ng-show="friend.following" data-ng-cloak>
+				<a data-ng-href="/#/{{friend.screen_name}}" class="info name">{{friend.name}}</a>
+				<a data-ng-href="/#/{{friend.screen_name}}" class="info screen_name">@{{friend.screen_name}}</a>
+				<span class="info followers">{{friend.followers_count | number}}</span>
+				<a data-ng-click="unfollow(friend)" class="info unfollow">Unfollow</a>
+			</li>
+		</ol>
+	</div>
+
+</section>

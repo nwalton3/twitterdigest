@@ -20,7 +20,6 @@ module.exports = (grunt) ->
 				style: 'compact'
 				debugInfo: false
 				trace:     true
-				sourcemap: true
 			files:
 				expand: true
 				cwd: 'css-sass/'
@@ -51,16 +50,23 @@ module.exports = (grunt) ->
 				spawn: false
 			sass:
 				files: ['css-sass/**/*.sass', 'css-sass/**/*.scss']
-				tasks: ['sass']
+				tasks: ['sass', 'autoprefixer']
 			css:
 				options:
 					livereload: {
-						port: 35729
-						key: grunt.file.read('//Applications/MAMP/certificates/twitterdigest.local.key')
-						cert: grunt.file.read('//Applications/MAMP/certificates/twitterdigest.local.crt')
+						port: 9000
+						key: grunt.file.read('//Applications/MAMP/certificates/twd.local.key')
+						cert: grunt.file.read('//Applications/MAMP/certificates/twd.local.crt')
 					}
 				files: ['css/**/*']
-				tasks: ['autoprefixer']
+			app:
+				options:
+					livereload: {
+						port: 9000
+						key: grunt.file.read('//Applications/MAMP/certificates/twd.local.key')
+						cert: grunt.file.read('//Applications/MAMP/certificates/twd.local.crt')
+					}
+				files: ['app/**/*']
 
 
 
