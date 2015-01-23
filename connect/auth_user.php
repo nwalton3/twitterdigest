@@ -218,6 +218,3 @@ function connect( $path, $q, $id, $post ) {
 
 
 
-
-
-?>

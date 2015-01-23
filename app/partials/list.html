@@ -12,11 +12,20 @@
 			</span>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source name">{{user.name}}</a>
 			<a data-ng-href="https://twitter.com/{{user.screen_name}}" class="source screen_name">@{{user.screen_name}}</a>
+
 			<span class="follow_user" data-ng-show="user">
-				<a href="" class="follow btn btn-primary" data-ng-hide="user.following || user.screen_name == my.settings.screen_name" data-ng-click="follow(user)" data-ng-cloak >Follow</a>
+
+				<!-- Not following -->
+				<a href="" class="follow btn btn-primary" data-ng-show="tweets.length && !user.following && user.screen_name !== my.settings.screen_name" data-ng-click="follow(user)">Follow</a>
+
+				<!-- Following -->
 				<span class="following" data-ng-show="user.following">Following</span>
+
 			</span>
 		</h1>
+
+		<a href="" class="next top" data-ng-href="/#/{{ nextUser.screen_name }}" data-ng-show="user.following && nextUser.screen_name" data-ng-cloak>Next</a>
+
 	</header>
 
 
@@ -29,11 +38,11 @@
 			<label for="imageToggle">Images</label>
 			<input type="checkbox" data-ng-model="showImages" id="imageToggle"></input>
 		</div>
-		<a href="" class="next top" data-ng-href="/#/{{ nextUser.screen_name }}" data-ng-show="nextUser.screen_name" data-ng-cloak>Next</a>
 	</div>
 
 
 	<div class="tweets tweetLoader" ng-hide="tweets.length">Loading...</div>
+	
 	<ul class="tweets" ng-show="tweets.length">
 		<li class="tweet animate-repeat" data-ng-repeat="tweet in tweets | orderBy:tweetSort | limitTo: tweetsToShow">
 			<div class="tweet_body">

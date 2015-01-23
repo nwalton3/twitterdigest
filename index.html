@@ -30,73 +30,17 @@
 		<div class="view-container" data-ng-controller="HeaderCtrl">
 
 			<header class="page-header">
-
-				<h1 data-ng-show="my.settings" ng-cloak>
+				<h1>
 					<a href="/">Twitter List Digest</a>
 				</h1>
-
-				<!-- Sign in with Twitter -->
-				<div data-ng-show="!my.settings" ng-cloak>
-					<a href="/connect/auth_user.php?path=account%2Fverify_credentials&q=skip_status%3Dtrue%26include_entities%3Dfalse" >
-						<img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" title="Sign in with Twitter">
-					</a>
-				</div>
-
-
-
-				<!-- Search -->
-<!-- 				<form role="form" class="form-inline search animate-show" ng-submit="findUser()" method="GET" data-ng-show="my.settings">
-					<div class="input-group">
-						<span class="input-group-addon">@</span>
-						<input id="twitterHandle" name="twitterHandle" type="text" class="form-control" ng-model="screen_name" required />
-						<span class="input-group-btn">
-							<button class="btn btn-primary">Search</button>
-						</span>
-					</div>
-				</form> -->
-
-
-				<!-- Logged in user -->
-<!-- 				<div class="logged-in-user btn-group animate-show" data-ng-show="my.settings.screen_name">
-					<a data-ng-href="/#/{{my.settings.screen_name}}" class="btn btn-danger" data-ng-show="my.settings.screen_name">
-						@{{my.settings.screen_name}}
-					</a>
-
-					<div class="btn-group">
-						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-							Following
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-right" role="menu">
-							<li data-ng-repeat="user in my.friends.users | orderBy:'-followers_count'">
-								<a data-ng-class="{{screen_name}}" data-ng-href="/#/{{user.screen_name}}">
-									<span class="name">{{user.name}}</span>
-									<span class="screen_name">@{{user.screen_name}}</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-
-					<div class="btn-group">
-						<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-							Lists
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-right" role="menu">
-							<li data-ng-repeat="list in my.lists | orderBy:'name'">
-								<a data-ng-href="/#/{{list.user.screen_name}}/{{list.name}}">
-									<span class="name">{{list.name}}</span>
-									<span class="screen_name">(@{{list.user.screen_name}})</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div> -->
-
 			</header>
 
 
-			<div data-ng-view class="view-frame"></div>
+
+			<div data-ng-view autoscroll="true" class="view-frame">
+				<!-- Content gets inserted here by Angular -->
+			</div>
+
 
 
 			<footer>

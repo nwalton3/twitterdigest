@@ -348,8 +348,15 @@
 				rt_value  = retweet_index * retweet_weight;
 				fav_value = favorite_index * favorite_weight;
 				fol_value = follower_index * follower_weight;
-				link_value = link_index * link_weight;
-				mention_value = mention_weight * mention_index;
+
+				if (link_index == 1 || link_index == 2) { link_value = link_weight }
+				else if (link_index > 2) { link_value = -link_weight }
+				else { link_value = 0 }
+
+				if (mention_index == 1) { mention_value = mention_weight }
+				else if (mention_index > 2) { mention_value = -mention_weight }
+				else { mention_value = 0 }
+
 				// lst_value = listed_index * listed_weight;
 
 				index = rt_value + fav_value + fol_value + link_value + mention_value;

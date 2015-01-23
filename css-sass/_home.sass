@@ -2,7 +2,152 @@
 
 @import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables"
 
+
+$break-1: 18em
+$break-2: 25em
+$break-3: 35em
+$break-4: 42.5em
+$break-5: 50em
+
 .home
+	
+	border: 1px solid transparent
+	background: url(../img/foliage.svg) center center no-repeat
+	background-size: 200% 200%
+	margin: 0 -5.556%
+	transition: all 200ms ease
+
+	@media (min-width: $break-2)
+		background-size: 166% 166%
+	@media (min-width: $break-3)
+		background-size: 133% 133%
+	@media (min-width: $break-4)
+		background-size: 100% 100%
+
+	h1
+		color: mix($yellow, white)
+		text-align: center
+		margin: 1.5em 5% 1em
+		font-size: 1.5em
+		transition: font-size 150ms ease
+		margin-left: auto
+		margin-right: auto
+		padding: 0
+		max-width: 90%
+		.line
+			white-space: nowrap
+
+		@media (min-width: $break-1)
+			font-size: 2em
+		@media (min-width: $break-2)
+			font-size: 2em
+		@media (min-width: $break-3)
+			font-size: 2.25em
+		@media (min-width: $break-4)
+			font-size: 2.5em
+		@media (min-width: $break-5)
+			font-size: 3em
+		strong
+			color: mix($yellow, white, 35%)
+			font-weight: 300
+	
+	.sign-in, .signed-in, .signed-in-info
+		text-align: center
+		position: relative
+		transition: all 150ms ease
+		color: #ccc
+		padding-left: 10%
+		padding-right: 10%
+
+	.signed-in, .signed-in-info
+		@media (min-width: $break-2)
+			font-size: 1.125em
+		@media (min-width: $break-3)
+			font-size: 1.25em
+		@media (min-width: $break-4)
+			font-size: 1.375em
+		@media (min-width: $break-5)
+			font-size: 1.5em
+		a
+			white-space: nowrap
+			&:hover
+				color: $blue2
+				text-decoration: none
+
+	.sign-in
+		padding-bottom: 6em
+		@media (min-width: $break-2)
+			padding-bottom: 6.5em
+		@media (min-width: $break-3)
+			padding-bottom: 7.5em
+		@media (min-width: $break-4)
+			padding-bottom: 8.5em
+		@media (min-width: $break-5)
+			padding-bottom: 9.5em
+		&:after
+			transition: all 150ms ease
+			display: block
+			content: " "
+			position: absolute
+			background: url(../img/bird.svg) bottom center no-repeat
+			bottom: -1.5em
+			left: 50%
+			margin-left: -50%
+			width: 75%
+			height: 88px
+			@media (min-width: 13em)
+				width: 156px
+				height: 88px
+				padding-bottom: 0
+			@media (min-width: $break-1)
+				margin-left: -144px
+			@media (min-width: $break-2)
+				width:        200px
+				height:       200px * 0.5625
+				margin-left: -200px * 0.925
+				bottom: -1.7em
+			@media (min-width: $break-3)
+				width:        250px
+				height:       250px * 0.5625
+				margin-left: -250px * 0.9
+				bottom: -2em
+			@media (min-width: $break-4)
+				width:        275px
+				height:       275px * 0.5625
+				margin-left: -275px * 0.875
+				bottom: -2.1em
+			@media (min-width: $break-5)
+				width:        300px
+				height:       300px * 0.5625
+				margin-left: -300px * 0.89
+				bottom: -2.2em
+				
+		a
+			background-color: #111
+			border: 1px solid #000
+			padding: 1em 1.25em
+			border-radius: 3px
+			display: inline-block
+			text-align: center
+			position: relative
+	
+	.signed-in
+		margin-bottom: 0.25em
+
+	.signed-in-info
+		padding-bottom: 3em
+		font-weight: bold
+		&:after
+			content: " "
+			position: absolute
+			width: 56px
+			height: 56px
+			left: 50%
+			margin-left: -28px
+			background: url(../img/arrow.svg) no-repeat
+			bottom: -1em
+
+
 	.group
 		display: table
 		padding: 0
@@ -22,4 +167,3 @@
 			&:hover, &:focus
 				color: lighten($link-color, 15%)
 				text-decoration: none
-
