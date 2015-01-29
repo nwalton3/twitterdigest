@@ -76,8 +76,14 @@
 		</div>
 
 
-		<script>document.write('<script src="https://' + (location.host || 'localhost').split(':')[0] + ':9000/livereload.js"></' + 'script>')</script>
+		<script>
+			if( location.host == 'twd.local:8890' ) {
+				document.write('<script src="https://' + (location.host || 'localhost').split(':')[0] + ':9000/livereload.js"></' + 'script>');
+			}
+		</script>
+		<script src="js/listDigest.js"></script>
 
+		<!-- 
 		<script src="bower_components/underscore/underscore-min.js"></script>
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/angular/angular.min.js"></script>
@@ -95,5 +101,6 @@
 		<script src="app/js/filters.js"></script>
 		<script src="app/js/services.js"></script>
 		<script src="app/js/controllers.js"></script>
+		-->
 	</body>
 </html>

@@ -78,7 +78,7 @@ h2.numbers { padding-left: 1.25em; }
 @media (min-width: 50em) { .home .sign-in:after { width: 300px; height: 168.75px; margin-left: -267px; bottom: -2.2em; } }
 .home .sign-in a { background-color: #111; border: 1px solid #000; padding: 1em 1.25em; border-radius: 3px; display: inline-block; text-align: center; position: relative; }
 .home .signed-in { margin-bottom: 0.25em; }
-.home .signed-in-info { padding-bottom: 3em; font-weight: bold; }
+.home .signed-in-info { padding-bottom: 3em; }
 .home .signed-in-info:after { content: " "; position: absolute; width: 56px; height: 56px; left: 50%; margin-left: -28px; background: url(../img/arrow.svg) no-repeat; bottom: -1em; }
 .home .group { display: table; padding: 0; }
 .home .group .item { display: table-row; }

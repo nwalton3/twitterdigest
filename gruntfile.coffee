@@ -45,6 +45,29 @@ module.exports = (grunt) ->
 					else
 						include false
 
+		concat:
+			dist:
+				src: [
+					"bower_components/underscore/underscore-min.js",
+					"bower_components/jquery/dist/jquery.min.js",
+					"bower_components/angular/angular.min.js",
+					"bower_components/angular-route/angular-route.min.js",
+					"bower_components/angular-resource/angular-resource.min.js",
+					"bower_components/angular-sanitize/angular-sanitize.min.js",
+					"bower_components/angular-animate/angular-animate.min.js",
+					"bower_components/gsap/src/minified/TweenMax.min.js",
+					"bower_components/bootstrap/js/button.js",
+					"bower_components/bootstrap/js/dropdown.js",
+					"node_modules/typogr/typogr.min.js",
+					"app/js/app.js",
+					"app/js/directives.js",
+					"app/js/animations.js",
+					"app/js/filters.js",
+					"app/js/services.js",
+					"app/js/controllers.js",
+					],
+				dest: 'js/listDigest.js'
+
 		watch:
 			options:
 				spawn: false
@@ -74,5 +97,5 @@ module.exports = (grunt) ->
 
 
 	# Default task(s).
-	grunt.registerTask('compile', ['sass', 'autoprefixer'])
+	grunt.registerTask('compile', ['sass', 'autoprefixer', 'concat'])
 	grunt.registerTask('default', ['compile', 'watch'])
