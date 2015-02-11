@@ -82,6 +82,15 @@ module.exports = (grunt) ->
 						cert: grunt.file.read('//Applications/MAMP/certificates/twd.local.crt')
 					}
 				files: ['css/**/*']
+			js:
+				options: 
+					livereload: {
+						port: 9000
+						key: grunt.file.read('//Applications/MAMP/certificates/twd.local.key')
+						cert: grunt.file.read('//Applications/MAMP/certificates/twd.local.crt')
+					}
+				files: ['js/**/*', ]
+				tasks: ['concat']
 			app:
 				options:
 					livereload: {
